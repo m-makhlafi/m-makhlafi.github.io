@@ -18,6 +18,33 @@ export const site = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/mohammed-al-mekhlafi-it" },
     { label: "GitHub", href: "https://github.com/m-makhlafi" },
   ],
+  // "What I offer": one card per track. Lines come from his story; items are the skill units in portfolio.ts (racks).
+  offer: [
+    {
+      label: "البنية التحتية", color: "blue", port: "srv",
+      line: "سيرفرات Windows والافتراضية والنسخ الاحتياطي، وأنظمة المراقبة والدخول من التركيب في الميدان إلى الإدارة اليومية.",
+      units: ["Windows Server", "الافتراضية والنسخ الاحتياطي", "أنظمة المراقبة والدخول"],
+      proof: { label: "غرفة السيرفرات في رحلتي", href: "journey/#f-servers" },
+    },
+    {
+      label: "الشبكات والأمن", color: "green", port: "net",
+      line: "تقسيم الشبكات، وحل تداخل العناوين واختناقها، وتأمين تدفق البيانات.",
+      units: ["الشبكات", "الأمن"],
+      proof: { label: "جرّبها في المختبر التفاعلي", href: "#netlab" },
+    },
+    {
+      label: "هندسة البرمجيات", color: "accent", port: "dev",
+      line: "تطبيقات ومواقع Full-Stack، من العمل الحر إلى فريق هندسة البرمجيات في سما تاكسي.",
+      units: ["JavaScript و Node.js و React", "Python", "قواعد البيانات", "CI/CD و DevOps"],
+      proof: { label: "شاهد المشاريع", href: "#projects" },
+    },
+    {
+      label: "تصميم الأنظمة", color: "brown", port: "arch",
+      line: "معماريات قابلة للتوسع: موازنة الأحمال، والطوابير، وتوزيع قواعد البيانات.",
+      units: ["تصميم الأنظمة"],
+      proof: { label: "طابق تصميم الأنظمة في رحلتي", href: "journey/#f-design" },
+    },
+  ],
   tracks: [
     { label: "البنية التحتية", color: "blue" },
     { label: "الشبكات والأمن", color: "green" },

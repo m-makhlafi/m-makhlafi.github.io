@@ -9,6 +9,7 @@ import { floors } from "../data/journey";
 import { getCollection } from "astro:content";
 
 const seriesById = Object.fromEntries(series.map((s) => [s.id, s]));
+const unitByName = Object.fromEntries(racks.flatMap((r) => r.units).map((u) => [u.name, u]));
 const labCount = (await getCollection("labs")).length;
 // every number is counted from the site's own data or taken from his story
 const stats = [
@@ -51,6 +52,31 @@ const stats = [
     {stats.map((s) => <div><dt>{s.t}</dt><dd>{s.n}</dd></div>)}
   </dl>
 
+  <!-- WHAT I OFFER -->
+  <section class="block" id="offer">
+    <div class="sec-head">
+      <span class="port">:8080 stack</span>
+      <h2>ماذا أقدّم</h2>
+      <p>أربعة مسارات أعمل فيها، ولكل مسار دليل تستطيع فتحه بنفسك.</p>
+    </div>
+    <div class="offer">
+      {site.offer.map((o, i) => (
+        <article class="offer-card" style={`--wire:var(--${o.color})`}>
+          <div class="offer-top"><span class="mono">0{i + 1} /</span><span class="mono">{o.port}</span></div>
+          <h3>{o.label}</h3>
+          <p>{o.line}</p>
+          <ul>
+            {o.units.map((n) => {
+              const u = unitByName[n];
+              return u && <li><b>{u.name}</b><small>{u.note}</small></li>;
+            })}
+          </ul>
+          <a class="offer-proof" href={o.proof.href.startsWith("#") ? o.proof.href : url(o.proof.href)}>{o.proof.label} ←</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
   <a class="jr-teaser" href={url("journey/")}>
     <span class="floors" aria-hidden="true">
       {[...floors].reverse().map((f) => <i style={`--c:var(--${f.color})`}></i>)}
@@ -77,33 +103,6 @@ const stats = [
           <div><dt>{s.k}</dt><dd class={s.open ? "open-to-work" : undefined}>{s.open && <i class="led pulse"></i>}{s.v}</dd></div>
         ))}
       </dl>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="block" id="skills">
-    <div class="sec-head">
-      <span class="port">:8080 stack</span>
-      <h2>المهارات مركّبة على الرف</h2>
-      <p>كل مهارة وحدة داخل رف سيرفرات. لون الوحدة يتبع ألوان أزواج كابل الإيثرنت T568B، والأضواء تومض كأنها تعمل الآن.</p>
-    </div>
-    <div class="racks">
-      {racks.map((r) => (
-        <div class="rack">
-          <div class="rack-title"><h3>{r.title}</h3><span class="mono">{r.id} · {r.units.length}U</span></div>
-          <div class="units">
-            {r.units.map((u, i) => (
-              <div class="unit" style={`--wire:var(--${u.color})`}>
-                <span class="u-no">U{i + 1}</span>
-                <span class="name">
-                  <b>{u.name}</b><small>{u.note}</small>
-                </span>
-                <span class="leds"><i></i><i></i><i></i></span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
     </div>
   </section>
 
