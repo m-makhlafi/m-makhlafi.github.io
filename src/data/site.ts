@@ -8,6 +8,11 @@ export const site = {
   title: "محمد المخلافي | برمجيات وبنية تحتية",
   description: "مهندس برمجيات ومدير أنظمة: خبرة ميدانية في الشبكات والسيرفرات وأنظمة المراقبة، وهندسة برمجيات وتصميم أنظمة قابلة للتوسع.",
   heroIp: "10.0.0.12",
+  // Hero lines are taken from his story (About paragraph 3 and the Sama Taxi chapter).
+  hero: {
+    lead: "أفكر كمهندس برمجيات يصمم معماريات قابلة للتوسع، وكمدير أنظمة يضمن استقرار السيرفرات وأمن الشبكة.",
+    note: "آخر عمل: سما تاكسي · حتى سبتمبر 2026 · متاح لفرص جديدة",
+  },
   email: "mohammed.r.almekhafi@gmail.com",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/mohammed-al-mekhlafi-it" },

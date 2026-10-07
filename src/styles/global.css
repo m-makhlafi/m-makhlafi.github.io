@@ -139,6 +139,9 @@ nav a .mono { font-size: 0.72rem; color: var(--accent); }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero h1 .u { background: linear-gradient(transparent 70%, color-mix(in srgb, var(--blue) 35%, transparent) 70%); }
 .hero .lead { color: var(--muted); font-size: 1.08rem; max-width: 34em; }
+.hero-name { margin: 14px 0 0; font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+.hero-name + h1 { margin-top: 4px; }
+.hero-note { margin: 16px 0 0; font-size: 0.86rem; color: var(--muted); }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer;

@@ -14,15 +14,14 @@ const seriesById = Object.fromEntries(series.map((s) => [s.id, s]));
   <section class="hero" id="top">
     <div>
       <span class="eyebrow rise"><i class="led pulse"></i>status: open to work · {site.heroIp}</span>
-      <h1 class="rise d1">أشرح <em>البرمجة</em> و<span class="u">الشبكات</span><br />كما تعمل فعلاً</h1>
-      <p class="lead rise d2">صانع محتوى تقني بالعربية. فيديوهات قصيرة تشرح الكود والسيرفرات، وكيف تنتقل البيانات من جهازك إلى الطرف الآخر من العالم في أجزاء من الثانية.</p>
+      <p class="hero-name rise d1">{site.name}</p>
+      <h1 class="rise d1">مهندس <em>برمجيات</em><br />و<span class="u">مدير أنظمة</span></h1>
+      <p class="lead rise d2">{site.hero.lead}</p>
       <div class="cta rise d3">
-        <a class="btn primary" href="#content">شاهد الفيديوهات القصيرة</a>
-        <a class="btn" href={url("labs/")}>تصفح المختبرات</a>
+        <a class="btn primary" href={url("journey/")}>ادخل رحلتي ثلاثية الأبعاد</a>
+        <a class="btn" href="#contact">تواصل معي</a>
       </div>
-      <div class="tracks rise d4">
-        {site.tracks.map((t) => <span class="chip"><i style={`background:var(--${t.color})`}></i>{t.label}</span>)}
-      </div>
+      <p class="hero-note rise d4">{site.hero.note}</p>
     </div>
 
     <div class="console rise d2" aria-label="رسم متحرك لشبكة منزلية وطرفية">
