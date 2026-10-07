@@ -209,6 +209,13 @@ nav a .mono { font-size: 0.72rem; color: var(--accent); }
 }
 
 /* Sections */
+.xp { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+@media (max-width: 900px) { .xp { grid-template-columns: 1fr; } }
+.xp-aside { display: grid; gap: 16px; position: sticky; top: 84px; }
+@media (max-width: 900px) { .xp-aside { position: static; } }
+.xp-aside .jr-teaser { grid-template-columns: 58px 1fr; margin: 0; }
+.xp-aside .jr-teaser .btn { grid-column: 1 / -1; justify-self: start; }
+.xp-aside .jr-teaser h3 { font-size: 1.1rem; }
 .offer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 @media (max-width: 1000px) { .offer { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .offer { grid-template-columns: 1fr; } }

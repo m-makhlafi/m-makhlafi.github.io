@@ -77,32 +77,36 @@ const stats = [
     </div>
   </section>
 
-  <a class="jr-teaser" href={url("journey/")}>
-    <span class="floors" aria-hidden="true">
-      {[...floors].reverse().map((f) => <i style={`--c:var(--${f.color})`}></i>)}
-    </span>
-    <span>
-      <h2>ابدأ رحلتي ثلاثية الأبعاد</h2>
-      <p>برج من {floors.length} طوابق، من مقاعد الجامعة عام 2020 إلى سما تاكسي: الكابلات والكاميرات، والشبكات، والسيرفرات، والكود، وتصميم الأنظمة.</p>
-    </span>
-    <span class="btn primary">ادخل ←</span>
-  </a>
-
-  <!-- ABOUT -->
-  <section class="block" id="about">
+  <!-- EXPERIENCE -->
+  <section class="block" id="experience">
     <div class="sec-head">
-      <span class="port">:22 ssh</span>
-      <h2>من أنا</h2>
+      <span class="port">CHANGELOG.md</span>
+      <h2>الخبرة</h2>
+      <p>من مقاعد الجامعة عام 2020 إلى فريق هندسة البرمجيات في سما تاكسي، مكتوبة بأسلوب سجل الإصدارات: كل محطة إصدار جديد.</p>
     </div>
-    <div class="about">
-      <div class="text">
-        {site.about.paragraphs.map((p) => <p set:html={p} />)}
-      </div>
-      <dl class="spec-list">
-        {site.about.specs.map((s) => (
-          <div><dt>{s.k}</dt><dd class={s.open ? "open-to-work" : undefined}>{s.open && <i class="led pulse"></i>}{s.v}</dd></div>
+    <div class="xp">
+      <div class="log">
+        {changelog.map((e) => (
+          <div class="entry" style={`--wire:var(--${e.color})`}><span class="ver">{e.ver}</span><div><h3>{e.title}</h3><p>{e.text}</p></div></div>
         ))}
-      </dl>
+      </div>
+      <aside class="xp-aside">
+        <dl class="spec-list">
+          {site.about.specs.map((s) => (
+            <div><dt>{s.k}</dt><dd class={s.open ? "open-to-work" : undefined}>{s.open && <i class="led pulse"></i>}{s.v}</dd></div>
+          ))}
+        </dl>
+        <a class="jr-teaser" href={url("journey/")}>
+          <span class="floors" aria-hidden="true">
+            {[...floors].reverse().map((f) => <i style={`--c:var(--${f.color})`}></i>)}
+          </span>
+          <span>
+            <h3>نفس القصة، ثلاثية الأبعاد</h3>
+            <p>برج من {floors.length} طوابق: الكابلات والكاميرات، والشبكات، والسيرفرات، والكود، وتصميم الأنظمة.</p>
+          </span>
+          <span class="btn primary">ادخل ←</span>
+        </a>
+      </aside>
     </div>
   </section>
 
@@ -208,20 +212,6 @@ const stats = [
     </dialog>
     <script id="shorts-data" type="application/json"
       set:html={JSON.stringify({ base: url(""), series: seriesById, items: shorts }).replace(/</g, "\\u003c")} />
-  </section>
-
-  <!-- CHANGELOG -->
-  <section class="block" id="journey">
-    <div class="sec-head">
-      <span class="port">CHANGELOG.md</span>
-      <h2>سجل الإصدارات</h2>
-      <p>المسيرة مكتوبة بأسلوب سجل تغييرات البرمجيات. كل محطة إصدار جديد.</p>
-    </div>
-    <div class="log">
-      {changelog.map((e) => (
-        <div class="entry" style={`--wire:var(--${e.color})`}><span class="ver">{e.ver}</span><div><h3>{e.title}</h3><p>{e.text}</p></div></div>
-      ))}
-    </div>
   </section>
 
   <!-- CONTACT -->
