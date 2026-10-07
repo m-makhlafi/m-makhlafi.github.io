@@ -854,3 +854,10 @@ html:has(#jr) .topbar { background: color-mix(in srgb, var(--bg) 96%, transparen
 .xp-more { margin: 4px 22px 0 0; }
 .xp-more[hidden] { display: none; }
 
+
+/* Journey page: the footer sits over the live 3D scene, so it gets a solid panel and keeps clear of the floor menu */
+html:has(#jr) footer {
+  max-width: min(860px, calc(100vw - 290px)); padding: 24px; border: 1px solid var(--line); border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 96%, transparent); margin-bottom: 24px;
+}
+@media (max-width: 860px) { html:has(#jr) footer { max-width: none; } }
