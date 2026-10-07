@@ -13,7 +13,7 @@
   --brown: #B08560;    /* brown pair */
   --accent-ink: #1A0F05;
   --danger: #E5574F;
-  --grid: rgba(147, 161, 176, 0.07);
+  --grid: rgba(147, 161, 176, 0.045);
   --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
 
   --f-display: "Reem Kufi", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
@@ -42,7 +42,7 @@
     --brown: #7F5636;
     --accent-ink: #FFFFFF;
     --danger: #C4302B;
-    --grid: rgba(18, 26, 35, 0.05);
+    --grid: rgba(18, 26, 35, 0.035);
     --shadow: 0 18px 40px -26px rgba(18, 26, 35, 0.35);
   }
 }
@@ -60,7 +60,7 @@
   --brown: #7F5636;
   --accent-ink: #FFFFFF;
   --danger: #C4302B;
-  --grid: rgba(18, 26, 35, 0.05);
+  --grid: rgba(18, 26, 35, 0.035);
   --shadow: 0 18px 40px -26px rgba(18, 26, 35, 0.35);
 }
 
