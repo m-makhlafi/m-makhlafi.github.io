@@ -22,10 +22,20 @@ const moreBtn = document.getElementById("shortsMore");
 // The home page shows the first 6 shorts; "show all" or picking a series reveals the rest.
 const PREVIEW = 6;
 let shortsFilter = "all", shortsExpanded = false;
+// the preview takes turns between the series, so all four are represented
+const preview = new Set();
+{
+  const bySeries = new Map();
+  shorts.forEach((s) => { const k = s.getAttribute("data-s"); if (!bySeries.has(k)) bySeries.set(k, []); bySeries.get(k).push(s); });
+  const queues = [...bySeries.values()];
+  for (let round = 0; preview.size < Math.min(PREVIEW, shorts.length); round++) {
+    queues.forEach((q) => { if (q[round] && preview.size < PREVIEW) preview.add(q[round]); });
+  }
+}
 function applyShorts() {
-  shorts.forEach((s, i) => {
+  shorts.forEach((s) => {
     const match = shortsFilter === "all" || s.getAttribute("data-s") === shortsFilter;
-    s.hidden = !match || (shortsFilter === "all" && !shortsExpanded && i >= PREVIEW);
+    s.hidden = !match || (shortsFilter === "all" && !shortsExpanded && !preview.has(s));
   });
   if (moreBtn) {
     moreBtn.hidden = shortsFilter !== "all" || shorts.length <= PREVIEW;
