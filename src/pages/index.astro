@@ -219,11 +219,12 @@ const stats = [
   <section class="block" id="contact">
     <div class="sec-head">
       <span class="port">:25 smtp</span>
-      <h2>تواصل</h2>
+      <h2>لنعمل معاً</h2>
+      <p>متاح لفرص جديدة في هندسة البرمجيات وإدارة الأنظمة.</p>
     </div>
-    <div class="contact">
+    <div class="contact contact-band">
       <div class="contact-info">
-        <p>للتعاون في محتوى تقني، أو رعاية فيديو، أو اقتراح موضوع للسلسلة القادمة.</p>
+        <p>لفرصة عمل، أو تعاون في محتوى تقني، أو اقتراح موضوع للسلسلة القادمة، راسلني مباشرة على البريد أو عبر LinkedIn.</p>
         <div class="copy-row">
           <span class="mono" id="mail">{site.email}</span>
           <button type="button" id="copyBtn">نسخ</button>
@@ -235,9 +236,9 @@ const stats = [
       <form class="card" id="contactForm" novalidate>
         <div class="field"><label for="cf-name">الاسم</label><input id="cf-name" name="name" type="text" placeholder="اسمك" /></div>
         <div class="field"><label for="cf-type">نوع الطلب</label>
-          <select id="cf-type" name="type"><option>اقتراح موضوع فيديو</option><option>تعاون أو رعاية</option><option>سؤال تقني</option></select>
+          <select id="cf-type" name="type"><option>فرصة عمل</option><option>تعاون في محتوى تقني</option><option>اقتراح موضوع فيديو</option><option>سؤال تقني</option></select>
         </div>
-        <div class="field"><label for="cf-msg">الرسالة</label><textarea id="cf-msg" name="msg" placeholder="مثال: أقترح فيديو يشرح الفرق بين TCP و UDP."></textarea></div>
+        <div class="field"><label for="cf-msg">الرسالة</label><textarea id="cf-msg" name="msg" placeholder="اكتب رسالتك: الدور أو الفكرة، وكيف أتواصل معك."></textarea></div>
         <button class="btn primary" type="submit">إرسال الرسالة</button>
         <p class="form-msg" id="formMsg" hidden>نموذج الإرسال لم يُربط بعد. راسلني على البريد المكتوب بجانبه.</p>
       </form>

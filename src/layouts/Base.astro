@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Topbar from "../components/Topbar.astro";
 import { site } from "../data/site";
+import { url } from "../lib/url";
 
 interface Props {
   title?: string;
@@ -40,8 +41,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <Topbar />
         <slot />
         <footer>
-          <span>© {new Date().getFullYear()} · {site.name} · محتوى تقني بالعربية</span>
-          <span class="mono">rtl · 9:16 ready</span>
+          <div class="foot-grid">
+            <div class="foot-id">
+              <a class="brand" href={url()}><span class="prompt"><span>{site.handle}@lab</span>:~$</span></a>
+              <p>{site.name}: مهندس برمجيات ومدير أنظمة.</p>
+            </div>
+            <nav aria-label="خريطة الموقع">
+              <h2>الصفحة الرئيسية</h2>
+              <a href={url() + "#offer"}>ماذا أقدّم</a>
+              <a href={url() + "#experience"}>الخبرة</a>
+              <a href={url() + "#projects"}>المشاريع</a>
+              <a href={url() + "#content"}>المحتوى</a>
+            </nav>
+            <nav aria-label="صفحات">
+              <h2>استكشف</h2>
+              <a href={url("journey/")}>رحلتي ثلاثية الأبعاد</a>
+              <a href={url() + "#netlab"}>المختبر التفاعلي</a>
+              <a href={url("labs/")}>مكتبة المختبرات</a>
+            </nav>
+            <nav aria-label="تواصل">
+              <h2>تواصل</h2>
+              <a href={`mailto:${site.email}`}>البريد الإلكتروني</a>
+              {site.socials.map((s) => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}
+            </nav>
+          </div>
+          <div class="foot-bottom">
+            <span>© {new Date().getFullYear()} · {site.name}</span>
+            <span class="mono">rtl · ar</span>
+          </div>
         </footer>
       </div>
     </div>

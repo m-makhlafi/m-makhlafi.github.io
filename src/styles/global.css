@@ -780,7 +780,17 @@ form.card { display: grid; gap: 14px; padding: 20px; border: 1px solid var(--lin
 .field textarea { min-height: 110px; resize: vertical; }
 .form-msg { font-size: 0.88rem; color: var(--green); }
 
-footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 0.82rem; }
+footer { margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.86rem; position: relative; z-index: 2; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 24px; }
+@media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-id { grid-column: 1 / -1; } }
+.foot-id p { margin: 8px 0 0; max-width: 32ch; }
+.foot-grid nav { display: grid; gap: 6px; align-content: start; }
+.foot-grid h2 { font-family: var(--f-body); font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.foot-grid a { color: var(--muted); text-decoration: none; }
+.foot-grid a:hover { color: var(--accent); }
+.foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.8rem; }
+.contact-band { padding: 28px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+@media (max-width: 560px) { .contact-band { padding: 18px; } }
 
 /* Hero load sequence: elements start visible, only slide */
 .rise { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
