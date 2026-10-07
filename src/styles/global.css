@@ -216,6 +216,10 @@ nav a .mono { font-size: 0.72rem; color: var(--accent); }
 .xp-aside .jr-teaser { grid-template-columns: 58px 1fr; margin: 0; }
 .xp-aside .jr-teaser .btn { grid-column: 1 / -1; justify-self: start; }
 .xp-aside .jr-teaser h3 { font-size: 1.1rem; }
+.sub-block { margin-top: 40px; padding-top: 28px; border-top: 1px dashed var(--line); scroll-margin-top: 70px; }
+.sub-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 20px; }
+.sub-head h3 { font-size: var(--step-1); }
+.sub-head p { color: var(--muted); flex-basis: 100%; max-width: 60ch; margin: 0; }
 .offer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 @media (max-width: 1000px) { .offer { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .offer { grid-template-columns: 1fr; } }
