@@ -6,8 +6,17 @@ import { site } from "../data/site";
 import { racks, projects, series, shorts, platforms, changelog } from "../data/portfolio";
 import { url } from "../lib/url";
 import { floors } from "../data/journey";
+import { getCollection } from "astro:content";
 
 const seriesById = Object.fromEntries(series.map((s) => [s.id, s]));
+const labCount = (await getCollection("labs")).length;
+// every number is counted from the site's own data or taken from his story
+const stats = [
+  { n: "2020", t: "بداية دراسة تقنية المعلومات" },
+  { n: String(projects.length), t: "مشاريع على GitHub" },
+  { n: String(labCount), t: "مختبراً تفاعلياً بأوامره" },
+  { n: String(shorts.filter((v) => v.video).length), t: "فيديو قصير بالعربية" },
+];
 ---
 <Base>
   <!-- HERO -->
@@ -38,10 +47,9 @@ const seriesById = Object.fromEntries(series.map((s) => [s.id, s]));
     </div>
   </section>
 
-  <div class="status">
-    {site.status.map((s) => <span>{s.prefix ? s.prefix + " " : ""}<strong>{s.strong}</strong> {s.text}</span>)}
-    <span class="mono">lang=ar · 1080×1920</span>
-  </div>
+  <dl class="stats" aria-label="بالأرقام">
+    {stats.map((s) => <div><dt>{s.t}</dt><dd>{s.n}</dd></div>)}
+  </dl>
 
   <a class="jr-teaser" href={url("journey/")}>
     <span class="floors" aria-hidden="true">

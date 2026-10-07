@@ -194,6 +194,20 @@ nav a .mono { font-size: 0.72rem; color: var(--accent); }
 .status strong { color: var(--ink); font-weight: 600; }
 .status .mono { font-size: 0.8rem; }
 
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); margin: 0;
+  border-block: 1px solid var(--line);
+}
+.stats div { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; padding: 18px 10px; text-align: center; }
+.stats div + div { border-inline-start: 1px solid var(--line); }
+.stats dd { margin: 0; font-family: var(--f-mono); font-size: clamp(1.6rem, 3.2vw, 2.3rem); font-weight: 600; color: var(--accent); line-height: 1.2; }
+.stats dt { color: var(--muted); font-size: 0.86rem; }
+@media (max-width: 640px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stats div:nth-child(3) { border-inline-start: 0; }
+  .stats div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
 /* Sections */
 section.block { padding-block: 72px 8px; scroll-margin-top: 70px; }
 .sec-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 28px; }
