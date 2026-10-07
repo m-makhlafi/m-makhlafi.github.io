@@ -18,13 +18,34 @@ if (themeBtn) {
 // Shorts filter
 const filterBtns = document.querySelectorAll("#shortsFilter button");
 const shorts = document.querySelectorAll("#shorts .short");
+const moreBtn = document.getElementById("shortsMore");
+// The home page shows the first 6 shorts; "show all" or picking a series reveals the rest.
+const PREVIEW = 6;
+let shortsFilter = "all", shortsExpanded = false;
+function applyShorts() {
+  shorts.forEach((s, i) => {
+    const match = shortsFilter === "all" || s.getAttribute("data-s") === shortsFilter;
+    s.hidden = !match || (shortsFilter === "all" && !shortsExpanded && i >= PREVIEW);
+  });
+  if (moreBtn) {
+    moreBtn.hidden = shortsFilter !== "all" || shorts.length <= PREVIEW;
+    moreBtn.setAttribute("aria-expanded", String(shortsExpanded));
+    moreBtn.textContent = shortsExpanded ? "عرض أقل" : `عرض كل الفيديوهات (${shorts.length})`;
+  }
+}
 filterBtns.forEach((b) => {
   b.addEventListener("click", () => {
-    const f = b.getAttribute("data-f");
+    shortsFilter = b.getAttribute("data-f");
     filterBtns.forEach((x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
-    shorts.forEach((s) => { s.hidden = !(f === "all" || s.getAttribute("data-s") === f); });
+    applyShorts();
   });
 });
+if (moreBtn) moreBtn.addEventListener("click", () => {
+  shortsExpanded = !shortsExpanded;
+  applyShorts();
+  if (!shortsExpanded) document.getElementById("content").scrollIntoView({ behavior: "smooth" });
+});
+if (shorts.length) applyShorts();
 
 // Copy email
 const copyBtn = document.getElementById("copyBtn");

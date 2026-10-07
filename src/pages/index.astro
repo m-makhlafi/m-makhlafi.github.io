@@ -149,7 +149,7 @@ const stats = [
     <div class="sec-head">
       <span class="port">:443 https</span>
       <h2>المحتوى القصير</h2>
-      <p>الموسم الأول: 30 فيديو في أربع سلاسل. اضغط أي بطاقة لتشاهد الفيديو، ولون البطاقة يحدد السلسلة التي تنتمي لها.</p>
+      <p>أشرح ما أعمل به في فيديوهات قصيرة بالعربية: {shorts.length} فيديو في أربع سلاسل. اضغط أي بطاقة لتشاهده، ولون البطاقة يحدد سلسلتها.</p>
     </div>
     <div class="shorts-filter" id="shortsFilter" role="group" aria-label="تصفية حسب السلسلة">
       <button type="button" data-f="all" aria-pressed="true">الكل</button>
@@ -175,6 +175,7 @@ const stats = [
         );
       })}
     </div>
+    <button type="button" class="btn shorts-more" id="shortsMore" hidden aria-controls="shorts" aria-expanded="false">عرض كل الفيديوهات ({shorts.length})</button>
     <div class="platforms">
       <span>تُنشر على:</span>
       {platforms.map((p) => <span class="chip">{p}</span>)}

@@ -743,6 +743,8 @@ button.short { font: inherit; color: var(--ink); text-align: start; cursor: poin
   .pl-info { max-height: none; overflow: visible; }
 }
 
+.shorts-more { display: flex; margin: 18px auto 0; }
+.shorts-more[hidden] { display: none; }
 .platforms { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; font-size: 0.85rem; color: var(--muted); align-items: center; }
 
 /* Changelog */
