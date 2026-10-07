@@ -85,10 +85,11 @@ const stats = [
       <p>من مقاعد الجامعة عام 2020 إلى فريق هندسة البرمجيات في سما تاكسي، مكتوبة بأسلوب سجل الإصدارات: كل محطة إصدار جديد.</p>
     </div>
     <div class="xp">
-      <div class="log">
+      <div class="log" id="xpLog">
         {changelog.map((e) => (
           <div class="entry" style={`--wire:var(--${e.color})`}><span class="ver">{e.ver}</span><div><h3>{e.title}</h3><p>{e.text}</p></div></div>
         ))}
+        <button type="button" class="btn xp-more" id="xpMore" hidden aria-controls="xpLog" aria-expanded="false">عرض المسيرة كاملة ({changelog.length})</button>
       </div>
       <aside class="xp-aside">
         <dl class="spec-list">

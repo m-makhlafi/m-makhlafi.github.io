@@ -57,6 +57,25 @@ if (moreBtn) moreBtn.addEventListener("click", () => {
 });
 if (shorts.length) applyShorts();
 
+// On phones the changelog opens with the latest 3 chapters; the rest is one tap away.
+const xpLog = document.getElementById("xpLog");
+const xpMore = document.getElementById("xpMore");
+if (xpLog && xpMore) {
+  const entries = [...xpLog.querySelectorAll(".entry")];
+  const phone = window.matchMedia("(max-width: 640px)");
+  let open = false;
+  const applyXp = () => {
+    const collapse = phone.matches && !open && entries.length > 3;
+    entries.forEach((e, i) => { e.hidden = collapse && i >= 3; });
+    xpMore.hidden = !phone.matches || entries.length <= 3;
+    xpMore.setAttribute("aria-expanded", String(open));
+    xpMore.textContent = open ? "عرض أقل" : `عرض المسيرة كاملة (${entries.length})`;
+  };
+  xpMore.addEventListener("click", () => { open = !open; applyXp(); });
+  if (phone.addEventListener) phone.addEventListener("change", applyXp);
+  applyXp();
+}
+
 // Copy email
 const copyBtn = document.getElementById("copyBtn");
 const mail = document.getElementById("mail");

@@ -841,3 +841,16 @@ html:has(#jr) .topbar { background: color-mix(in srgb, var(--bg) 96%, transparen
 .jr-panel, .jr-card, .jr-intro, .jr-end, .jr-nav ol, .jr-light, .jr-zoom { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 /* overlays never resize the page: let the browser skip layout work for them */
 .jr-callouts, .jr-nav, .jr-zoom { contain: layout style; }
+
+/* Phones: card groups become a swipeable row (the next card peeks in), so the page stays short */
+@media (max-width: 640px) {
+  .offer, .projects {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 84%; grid-template-columns: none;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-inline: -16px; padding: 2px 16px 14px; gap: 12px; scrollbar-width: thin;
+  }
+  .offer > *, .projects > * { scroll-snap-align: center; }
+}
+.xp-more { margin: 4px 22px 0 0; }
+.xp-more[hidden] { display: none; }
+
