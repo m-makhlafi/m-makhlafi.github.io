@@ -1,0 +1,610 @@
+[
+  {
+    "id": "ip",
+    "n": 1,
+    "s": "net",
+    "glyph": "IP",
+    "title": "ما هو عنوان IP؟ ولماذا يبدأ بـ192.168؟",
+    "dur": "1:01",
+    "desc": "كل جهاز على الشبكة له عنوان. لماذا يشبه عنوان جهازك عنوان جهاز جارك، وكيف تخرج كل أجهزة البيت إلى الإنترنت بعنوان واحد.",
+    "points": [
+      "العنوان الخاص والعنوان العام",
+      "نطاقات 192.168 و 10.0",
+      "كيف يعمل الـNAT"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/ip.mp4",
+      "poster": "videos/ip.jpg",
+      "thumb": "videos/ip.thumb.webp"
+    }
+  },
+  {
+    "id": "dns",
+    "n": 2,
+    "s": "net",
+    "glyph": "DNS",
+    "title": "ماذا يحدث عندما تكتب رابط موقع؟",
+    "dur": "1:01",
+    "desc": "رحلة اسم الموقع من المتصفح إلى عنوان IP في أقل من ثانية.",
+    "points": [
+      "لماذا نحتاج DNS",
+      "ترتيب البحث عن العنوان",
+      "لماذا يفتح الموقع أسرع في المرة الثانية"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/dns.mp4",
+      "poster": "videos/dns.jpg",
+      "thumb": "videos/dns.thumb.webp"
+    }
+  },
+  {
+    "id": "vlan",
+    "n": 3,
+    "s": "net",
+    "glyph": "VLAN",
+    "title": "ما هو الـVLAN؟ شبكتان على نفس السويتش",
+    "dur": "0:60",
+    "desc": "كيف تفصل أجهزة قسمين عن بعض دون شراء سويتش جديد، ولماذا لا يرى أحدهما الآخر.",
+    "points": [
+      "فكرة الشبكة الافتراضية",
+      "منفذ Access ومنفذ Trunk",
+      "وسم 802.1Q"
+    ],
+    "lab": {
+      "id": "vlan-trunk",
+      "label": "طبّقها بنفسك في مختبر VLAN و Trunk"
+    },
+    "video": {
+      "type": "file",
+      "src": "videos/vlan.mp4",
+      "poster": "videos/vlan.jpg",
+      "thumb": "videos/vlan.thumb.webp"
+    }
+  },
+  {
+    "id": "tcp-udp",
+    "n": 4,
+    "s": "net",
+    "glyph": "TCP",
+    "title": "TCP و UDP: الفرق في دقيقة",
+    "dur": "0:52",
+    "desc": "الطريقتان اللتان تنتقل بهما كل بيانات الإنترنت، ومتى تُستخدم كل واحدة.",
+    "points": [
+      "كيف يضمن TCP وصول البيانات",
+      "لماذا UDP أسرع",
+      "أمثلة من استخدامك اليومي"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/tcp-udp.mp4",
+      "poster": "videos/tcp-udp.jpg",
+      "thumb": "videos/tcp-udp.thumb.webp"
+    }
+  },
+  {
+    "id": "camera-phone",
+    "n": 5,
+    "s": "net",
+    "glyph": "CCTV",
+    "title": "كيف تصل كاميرا المراقبة إلى جوالك؟",
+    "dur": "0:57",
+    "desc": "الطريق الذي تسلكه صورة الكاميرا حتى تظهر على جوالك وأنت خارج البيت، والطريقة الآمنة للوصول إليها.",
+    "points": [
+      "دور جهاز التسجيل NVR",
+      "الراوتر والإنترنت",
+      "فتح المنافذ مقابل خدمة P2P"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/camera-phone.mp4",
+      "poster": "videos/camera-phone.jpg",
+      "thumb": "videos/camera-phone.thumb.webp"
+    }
+  },
+  {
+    "id": "dvr-nvr",
+    "n": 6,
+    "s": "net",
+    "glyph": "NVR",
+    "title": "الفرق بين DVR و NVR",
+    "dur": "0:57",
+    "desc": "جهازان لتسجيل كاميرات المراقبة. ما الفرق بينهما، وأيهما تختار لتركيب جديد.",
+    "points": [
+      "الكاميرات التناظرية مقابل كاميرات IP",
+      "نوع الكابل المستخدم",
+      "متى تختار كل واحد"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/dvr-nvr.mp4",
+      "poster": "videos/dvr-nvr.jpg",
+      "thumb": "videos/dvr-nvr.thumb.webp"
+    }
+  },
+  {
+    "id": "poe",
+    "n": 7,
+    "s": "net",
+    "glyph": "PoE",
+    "title": "ما هو PoE؟ كابل واحد للكهرباء والبيانات",
+    "dur": "0:51",
+    "desc": "كيف تعمل الكاميرا ونقطة الوصول دون مقبس كهرباء قريب، وما الذي يجب حسابه قبل شراء سويتش PoE.",
+    "points": [
+      "كيف يعمل PoE",
+      "سويتش PoE أو حاقن PoE",
+      "ميزانية الطاقة"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/poe.mp4",
+      "poster": "videos/poe.jpg",
+      "thumb": "videos/poe.thumb.webp"
+    }
+  },
+  {
+    "id": "camera-vlan",
+    "n": 8,
+    "s": "net",
+    "glyph": "IoT",
+    "title": "لماذا تعزل الكاميرات في شبكة منفصلة؟",
+    "dur": "0:47",
+    "desc": "كاميرا مخترقة على نفس شبكتك تعني أن أجهزتك كلها في خطر. والحل VLAN وجدار ناري.",
+    "points": [
+      "لماذا تُخترق الكاميرات بسهولة",
+      "كيف ينتشر الاختراق",
+      "عزل الكاميرات بـVLAN"
+    ],
+    "lab": {
+      "id": "vlan-trunk",
+      "label": "ابدأ بمختبر VLAN و Trunk"
+    },
+    "video": {
+      "type": "file",
+      "src": "videos/camera-vlan.mp4",
+      "poster": "videos/camera-vlan.jpg",
+      "thumb": "videos/camera-vlan.thumb.webp"
+    }
+  },
+  {
+    "id": "api",
+    "n": 9,
+    "s": "design",
+    "glyph": "API",
+    "title": "ما هو الـAPI؟ مثال المطعم والنادل",
+    "dur": "0:56",
+    "desc": "أنت الزبون، والـAPI هو النادل، والسيرفر هو المطبخ. هكذا يطلب تطبيقك البيانات دون أن يدخل إلى قاعدة البيانات بنفسه.",
+    "points": [
+      "الفرق بين العميل والسيرفر",
+      "الطلب والرد",
+      "معنى GET و POST ورموز الرد"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/api.mp4",
+      "poster": "videos/api.jpg",
+      "thumb": "videos/api.thumb.webp"
+    }
+  },
+  {
+    "id": "load-balancer",
+    "n": 10,
+    "s": "design",
+    "glyph": "LB",
+    "title": "ما هو الـLoad Balancer؟",
+    "dur": "0:51",
+    "desc": "كيف تتحمل المواقع الكبيرة ملايين الزوار دون أن تسقط: توزيع الطلبات على عدة سيرفرات.",
+    "points": [
+      "لماذا لا يكفي سيرفر واحد",
+      "طرق توزيع الطلبات",
+      "فحص صحة السيرفرات"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/load-balancer.mp4",
+      "poster": "videos/load-balancer.jpg",
+      "thumb": "videos/load-balancer.thumb.webp"
+    }
+  },
+  {
+    "id": "caching",
+    "n": 11,
+    "s": "design",
+    "glyph": "Cache",
+    "title": "الـCaching: لماذا يفتح الموقع أسرع في المرة الثانية؟",
+    "dur": "0:50",
+    "desc": "احفظ الإجابة بدل أن تحسبها كل مرة. أبسط فكرة تجعل الأنظمة أسرع بعشرات المرات.",
+    "points": [
+      "فكرة الكاش",
+      "Cache hit و Cache miss",
+      "أين يوجد الكاش"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/caching.mp4",
+      "poster": "videos/caching.jpg",
+      "thumb": "videos/caching.thumb.webp"
+    }
+  },
+  {
+    "id": "scaling",
+    "n": 12,
+    "s": "design",
+    "glyph": "Scale",
+    "title": "التوسع العمودي أم الأفقي؟",
+    "dur": "0:51",
+    "desc": "تطبيقك نجح والضغط زاد. هل تشتري سيرفراً أقوى أم تضيف سيرفرات أكثر؟",
+    "points": [
+      "التوسع العمودي",
+      "التوسع الأفقي",
+      "متى تنتقل من واحد إلى الآخر"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/scaling.mp4",
+      "poster": "videos/scaling.jpg",
+      "thumb": "videos/scaling.thumb.webp"
+    }
+  },
+  {
+    "id": "cdn",
+    "n": 13,
+    "s": "design",
+    "glyph": "CDN",
+    "title": "الـCDN: لماذا يصلك الفيديو بسرعة من أي بلد؟",
+    "dur": "0:50",
+    "desc": "سيرفرات منتشرة في مدن العالم تحتفظ بنسخ قريبة منك، فيصلك المحتوى بسرعة مهما كان مكانك.",
+    "points": [
+      "ما هي شبكة توزيع المحتوى",
+      "Edge و Origin",
+      "السرعة والحماية"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/cdn.mp4",
+      "poster": "videos/cdn.jpg",
+      "thumb": "videos/cdn.thumb.webp"
+    }
+  },
+  {
+    "id": "sql-nosql",
+    "n": 14,
+    "s": "design",
+    "glyph": "SQL",
+    "title": "قاعدة بيانات SQL أم NoSQL؟",
+    "dur": "0:45",
+    "desc": "الجداول المنظمة مقابل المستندات المرنة، ومتى تختار كل واحدة.",
+    "points": [
+      "كيف تخزن SQL البيانات",
+      "كيف تخزن NoSQL البيانات",
+      "متى تختار كل واحدة"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/sql-nosql.mp4",
+      "poster": "videos/sql-nosql.jpg",
+      "thumb": "videos/sql-nosql.thumb.webp"
+    }
+  },
+  {
+    "id": "queue",
+    "n": 15,
+    "s": "design",
+    "glyph": "Queue",
+    "title": "الـMessage Queue: كيف يتحمل الموقع ضغط الطلبات؟",
+    "dur": "0:45",
+    "desc": "بدل أن ينفذ الموقع كل شيء فوراً، يضع المهام في طابور ينفذه العمال بالسرعة التي يتحملونها.",
+    "points": [
+      "فكرة الطابور",
+      "المنتج والعامل",
+      "أشهر الأدوات"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/queue.mp4",
+      "poster": "videos/queue.jpg",
+      "thumb": "videos/queue.thumb.webp"
+    }
+  },
+  {
+    "id": "url-shortener",
+    "n": 16,
+    "s": "design",
+    "glyph": "short",
+    "title": "كيف تصمم خدمة اختصار روابط؟",
+    "dur": "0:50",
+    "desc": "سؤال مقابلات العمل الشهير في دقيقة: الفكرة، والتخزين، والكاش، وكم رابطاً تكفيه سبعة أحرف.",
+    "points": [
+      "توليد الرمز القصير",
+      "التخزين والتحويل",
+      "الكاش للروابط الشائعة"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/url-shortener.mp4",
+      "poster": "videos/url-shortener.jpg",
+      "thumb": "videos/url-shortener.thumb.webp"
+    }
+  },
+  {
+    "id": "what-server",
+    "n": 17,
+    "s": "servers",
+    "glyph": "SRV",
+    "title": "ما هو السيرفر؟ وهل يصلح جهازك ليكون سيرفراً؟",
+    "dur": "0:48",
+    "desc": "السيرفر دور وليس نوع جهاز. ما الفرق بين جهازك وسيرفر حقيقي، وكيف تبدأ التعلم بجهاز قديم.",
+    "points": [
+      "السيرفر دور يقوم به الجهاز",
+      "الفرق مع السيرفرات الحقيقية",
+      "ابدأ بجهازك القديم"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/what-server.mp4",
+      "poster": "videos/what-server.jpg",
+      "thumb": "videos/what-server.thumb.webp"
+    }
+  },
+  {
+    "id": "linux-windows",
+    "n": 18,
+    "s": "servers",
+    "glyph": "Linux",
+    "title": "Linux أم Windows Server؟",
+    "dur": "0:47",
+    "desc": "لماذا تعمل أغلب سيرفرات الإنترنت بنظام Linux، وأين يتفوق Windows Server.",
+    "points": [
+      "مزايا Linux للسيرفرات",
+      "أين يتفوق Windows Server",
+      "أيهما تتعلم أولاً"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/linux-windows.mp4",
+      "poster": "videos/linux-windows.jpg",
+      "thumb": "videos/linux-windows.thumb.webp"
+    }
+  },
+  {
+    "id": "vps-first",
+    "n": 19,
+    "s": "servers",
+    "glyph": "VPS",
+    "title": "أول 5 أشياء تفعلها بعد استلام VPS",
+    "dur": "0:49",
+    "desc": "خمس خطوات تحمي سيرفرك الجديد من الاختراق قبل أن تثبت عليه أي شيء.",
+    "points": [
+      "تحديث النظام ومستخدم جديد",
+      "الدخول بمفتاح SSH",
+      "الجدار الناري و fail2ban"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/vps-first.mp4",
+      "poster": "videos/vps-first.jpg",
+      "thumb": "videos/vps-first.thumb.webp"
+    }
+  },
+  {
+    "id": "ssh-keys",
+    "n": 20,
+    "s": "servers",
+    "glyph": "SSH",
+    "title": "الدخول إلى السيرفر بـSSH دون كلمة مرور",
+    "dur": "0:48",
+    "desc": "المفتاح العام والمفتاح الخاص ببساطة، وثلاثة أوامر تكفي لتدخل سيرفرك بأمان.",
+    "points": [
+      "لماذا كلمات المرور خطر",
+      "المفتاح العام والخاص",
+      "تعطيل الدخول بكلمة المرور"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/ssh-keys.mp4",
+      "poster": "videos/ssh-keys.jpg",
+      "thumb": "videos/ssh-keys.thumb.webp"
+    }
+  },
+  {
+    "id": "nginx",
+    "n": 21,
+    "s": "servers",
+    "glyph": "nginx",
+    "title": "الـNginx Reverse Proxy في دقيقة",
+    "dur": "0:48",
+    "desc": "بوابة واحدة أمام عدة تطبيقات على نفس السيرفر: كيف يوجه Nginx كل طلب إلى التطبيق الصحيح.",
+    "points": [
+      "فكرة الـReverse Proxy",
+      "توجيه الطلبات حسب المسار",
+      "شهادة واحدة لكل التطبيقات"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/nginx.mp4",
+      "poster": "videos/nginx.jpg",
+      "thumb": "videos/nginx.thumb.webp"
+    }
+  },
+  {
+    "id": "https",
+    "n": 22,
+    "s": "servers",
+    "glyph": "TLS",
+    "title": "شهادة HTTPS مجانية لموقعك",
+    "dur": "0:52",
+    "desc": "ماذا يعني القفل في المتصفح، وكيف تحصل على شهادة مجانية وتجددها تلقائياً.",
+    "points": [
+      "لماذا HTTPS",
+      "Let's Encrypt و Certbot",
+      "ما الذي لا يعنيه القفل"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/https.mp4",
+      "poster": "videos/https.jpg",
+      "thumb": "videos/https.thumb.webp"
+    }
+  },
+  {
+    "id": "raid",
+    "n": 23,
+    "s": "servers",
+    "glyph": "RAID",
+    "title": "الـRAID: لماذا لا تضيع بياناتك إذا تعطل قرص؟",
+    "dur": "0:52",
+    "desc": "كيف تجمع السيرفرات عدة أقراص لتتحمل تعطل أحدها، ولماذا لا يغني ذلك عن النسخ الاحتياطي.",
+    "points": [
+      "فكرة RAID",
+      "الفرق بين RAID 1 و RAID 5",
+      "RAID ليس نسخة احتياطية"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/raid.mp4",
+      "poster": "videos/raid.jpg",
+      "thumb": "videos/raid.thumb.webp"
+    }
+  },
+  {
+    "id": "devops",
+    "n": 24,
+    "s": "devops",
+    "glyph": "DevOps",
+    "title": "ما هو الـDevOps؟",
+    "dur": "0:52",
+    "desc": "طريقة عمل تجمع المطورين وفريق التشغيل، وليست اسم برنامج أو وظيفة.",
+    "points": [
+      "المشكلة التي يحلها DevOps",
+      "أهم الممارسات",
+      "دورة DevOps"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/devops.mp4",
+      "poster": "videos/devops.jpg",
+      "thumb": "videos/devops.thumb.webp"
+    }
+  },
+  {
+    "id": "docker",
+    "n": 25,
+    "s": "devops",
+    "glyph": "docker",
+    "title": "الـDocker: نهاية جملة \"يعمل على جهازي\"",
+    "dur": "0:48",
+    "desc": "التطبيق يُشحن مع كل ما يحتاجه في حاوية واحدة، فيعمل بنفس الطريقة على أي جهاز.",
+    "points": [
+      "المشكلة التي يحلها Docker",
+      "ملف Dockerfile",
+      "الفرق بين Image و Container"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/docker.mp4",
+      "poster": "videos/docker.jpg",
+      "thumb": "videos/docker.thumb.webp"
+    }
+  },
+  {
+    "id": "container-vm",
+    "n": 26,
+    "s": "devops",
+    "glyph": "VM",
+    "title": "الفرق بين الـContainer والـVM",
+    "dur": "0:54",
+    "desc": "كلاهما يعزل التطبيقات، لكن بطريقتين مختلفتين جداً. بيت مستقل مقابل شقة في عمارة.",
+    "points": [
+      "كيف يعمل الجهاز الافتراضي",
+      "كيف تعمل الحاوية",
+      "متى تستخدم كل واحد"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/container-vm.mp4",
+      "poster": "videos/container-vm.jpg",
+      "thumb": "videos/container-vm.thumb.webp"
+    }
+  },
+  {
+    "id": "cicd",
+    "n": 27,
+    "s": "devops",
+    "glyph": "CI/CD",
+    "title": "الـCI/CD: كيف يُنشر الكود تلقائياً؟",
+    "dur": "0:51",
+    "desc": "تدفع الكود إلى GitHub فيُبنى ويُختبر ويُنشر وحده. وموقعي نفسه مثال حي على ذلك.",
+    "points": [
+      "التكامل المستمر CI",
+      "النشر المستمر CD",
+      "مثال GitHub Actions"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/cicd.mp4",
+      "poster": "videos/cicd.jpg",
+      "thumb": "videos/cicd.thumb.webp"
+    }
+  },
+  {
+    "id": "compose",
+    "n": 28,
+    "s": "devops",
+    "glyph": "compose",
+    "title": "الـDocker Compose: تطبيق كامل بأمر واحد",
+    "dur": "0:49",
+    "desc": "الموقع وقاعدة البيانات والكاش في ملف واحد، تشغلها كلها بأمر واحد.",
+    "points": [
+      "لماذا نحتاج Compose",
+      "ملف compose.yaml",
+      "الشبكة الداخلية بين الخدمات"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/compose.mp4",
+      "poster": "videos/compose.jpg",
+      "thumb": "videos/compose.thumb.webp"
+    }
+  },
+  {
+    "id": "kubernetes",
+    "n": 29,
+    "s": "devops",
+    "glyph": "k8s",
+    "title": "الـKubernetes ببساطة",
+    "dur": "0:51",
+    "desc": "قائد أوركسترا يدير مئات الحاويات على عشرات السيرفرات، ويعيد تشغيل ما يتعطل وحده.",
+    "points": [
+      "المشكلة التي يحلها Kubernetes",
+      "الحالة المطلوبة",
+      "هل تحتاجه فعلاً"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/kubernetes.mp4",
+      "poster": "videos/kubernetes.jpg",
+      "thumb": "videos/kubernetes.thumb.webp"
+    }
+  },
+  {
+    "id": "monitoring",
+    "n": 30,
+    "s": "devops",
+    "glyph": "Grafana",
+    "title": "مراقبة السيرفرات بـPrometheus و Grafana",
+    "dur": "0:56",
+    "desc": "اعرف بالعطل قبل أن يخبرك المستخدم: جمع الأرقام، ولوحات المراقبة، والتنبيهات.",
+    "points": [
+      "كيف يجمع Prometheus الأرقام",
+      "لوحات Grafana",
+      "ماذا تراقب أولاً"
+    ],
+    "video": {
+      "type": "file",
+      "src": "videos/monitoring.mp4",
+      "poster": "videos/monitoring.jpg",
+      "thumb": "videos/monitoring.thumb.webp"
+    }
+  }
+]

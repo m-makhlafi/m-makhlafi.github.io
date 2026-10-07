@@ -1,0 +1,15 @@
+﻿---
+import Base from "../../layouts/Base.astro";
+import LabCatalog from "../../components/LabCatalog.astro";
+import { site } from "../../data/site";
+---
+<Base title={`مكتبة المختبرات | ${site.name}`} description="مختبرات شبكات وسيرفرات بالعربية: كيف يعمل كل موضوع، وكل أمر يُستخدم لضبطه، وكيف تتحقق أنه يعمل.">
+  <section class="block" style="padding-block-start:48px">
+    <div class="sec-head">
+      <span class="port">:69 tftp</span>
+      <h2>مكتبة المختبرات</h2>
+      <p>كل موضوع مختبر مستقل: كيف يعمل، وكل أمر يُستخدم لضبطه، وكيف تتحقق أنه يعمل. اختر مختبراً متاحاً لتبدأ.</p>
+    </div>
+    <LabCatalog />
+  </section>
+</Base>

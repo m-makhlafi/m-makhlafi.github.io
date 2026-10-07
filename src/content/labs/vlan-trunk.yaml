@@ -1,0 +1,227 @@
+# Reference lab. Copy this file to start a new lab.
+# Colors: accent | blue | green | brown | muted | danger
+# state is cumulative: each step only lists what changes.
+
+title: VLAN و Trunk بين سويتشين
+category: switching
+level: مبتدئ
+minutes: 20
+order: 1
+status: available
+platform: Cisco IOS
+devices: سويتشان + 4 أجهزة
+keywords: [vlan, trunk, 802.1q, switchport, access]
+startStep: 0
+
+legend:
+  - { label: "VLAN 10 · SALES", color: green }
+  - { label: "VLAN 20 · IT", color: blue }
+  - { label: "VLAN 1 · افتراضية", color: muted }
+
+topology:
+  viewBox: "0 0 720 350"
+  nodes:
+    - { id: SW1, x: 220, y: 100, label: SW1, sub: Cisco 2960, kind: switch, tag: VLAN 1 }
+    - { id: SW2, x: 500, y: 100, label: SW2, sub: Cisco 2960, kind: switch, tag: VLAN 1 }
+    - { id: PC-A, x: 100, y: 290, label: PC-A, sub: 192.168.10.11, tag: VLAN 1 }
+    - { id: PC-B, x: 270, y: 290, label: PC-B, sub: 192.168.20.12, tag: VLAN 1 }
+    - { id: PC-C, x: 450, y: 290, label: PC-C, sub: 192.168.10.13, tag: VLAN 1 }
+    - { id: PC-D, x: 620, y: 290, label: PC-D, sub: 192.168.20.14, tag: VLAN 1 }
+  links:
+    - { id: SW1-SW2, from: SW1, to: SW2, fromPort: Gi0/1, toPort: Gi0/1, label: "access · vlan 1" }
+    - { id: SW1-PC-A, from: SW1, to: PC-A, toPort: Fa0/1 }
+    - { id: SW1-PC-B, from: SW1, to: PC-B, toPort: Fa0/2 }
+    - { id: SW2-PC-C, from: SW2, to: PC-C, toPort: Fa0/1 }
+    - { id: SW2-PC-D, from: SW2, to: PC-D, toPort: Fa0/2 }
+
+steps:
+  - title: نقطة البداية
+    idea: >-
+      قبل أي إعداد، كل منافذ السويتش في VLAN 1. أي رسالة Broadcast من PC-A تصل إلى الأجهزة الأربعة كلها،
+      حتى أجهزة القسم الآخر. الهدف: فصل قسم المبيعات (VLAN 10) عن قسم IT (VLAN 20)، مع أن أجهزة كل قسم موزعة على سويتشين.
+    highlight: [SW1, SW2]
+    commands:
+      SW1:
+        - { cmd: "enable", ex: "الدخول إلى وضع الصلاحيات (Privileged EXEC). العلامة تتغير من > إلى #." }
+        - { cmd: "show vlan brief", ex: "عرض كل الـVLANs والمنافذ التابعة لكل منها." }
+    verify:
+      cmd: "SW1# show vlan brief"
+      output: |-
+        VLAN Name      Status    Ports
+        ---- --------- --------- ------------------------------
+        1    default   active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                 Gi0/1, Gi0/2
+    mistakes:
+      - "كتابة أوامر الإعداد في وضع User EXEC (العلامة >) تعطي الرسالة: % Invalid input detected."
+
+  - title: إنشاء الـVLANs
+    idea: ننشئ VLAN 10 و VLAN 20 على السويتشين معاً. يجب أن تكون الـVLAN موجودة على كل سويتش تمر به إطاراتها، وإلا سيرميها.
+    highlight: [SW1, SW2]
+    state:
+      nodes:
+        SW1: { tag: "VLAN 1 · 10 · 20" }
+        SW2: { tag: "VLAN 1 · 10 · 20" }
+    commands:
+      SW1: &vlans
+        - { cmd: "configure terminal", ex: "الدخول إلى وضع الإعداد العام (Global configuration)." }
+        - { cmd: "vlan 10", ex: "إنشاء VLAN رقم 10 والدخول إلى إعداداتها." }
+        - { cmd: " name SALES", ex: "اسم وصفي يظهر في show vlan، ولا يؤثر على عمل الشبكة." }
+        - { cmd: "exit", ex: "الرجوع إلى وضع الإعداد العام." }
+        - { cmd: "vlan 20", ex: "إنشاء VLAN رقم 20." }
+        - { cmd: " name IT", ex: "اسم VLAN 20." }
+        - { cmd: "exit", ex: "الرجوع إلى وضع الإعداد العام." }
+      SW2: *vlans
+    verify:
+      cmd: "SW1# show vlan brief"
+      output: |-
+        VLAN Name      Status    Ports
+        ---- --------- --------- ------------------------------
+        1    default   active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+        10   SALES     active
+        20   IT        active
+    mistakes:
+      - "إنشاء الـVLAN على SW1 فقط: إطارات VLAN 10 تصل إلى SW2 فيرميها لأنه لا يعرفها، ولا يستقبل PC-C شيئاً."
+
+  - title: تخصيص المنافذ (Access)
+    idea: >-
+      منفذ الـAccess ينتمي إلى VLAN واحدة فقط، ويتصل بجهاز نهائي مثل كمبيوتر.
+      السويتش هو من يقرر إلى أي VLAN ينتمي كل إطار يدخل من هذا المنفذ.
+    highlight: [PC-A, PC-B, PC-C, PC-D]
+    state:
+      nodes:
+        PC-A: { color: green, tag: VLAN 10 }
+        PC-B: { color: blue, tag: VLAN 20 }
+        PC-C: { color: green, tag: VLAN 10 }
+        PC-D: { color: blue, tag: VLAN 20 }
+    commands:
+      SW1:
+        - { cmd: "interface fastEthernet0/1", ex: "اختيار المنفذ المتصل بـPC-A." }
+        - { cmd: " switchport mode access", ex: "تثبيت المنفذ كـAccess، ومنع تحوله إلى Trunk بالتفاوض التلقائي (DTP)." }
+        - { cmd: " switchport access vlan 10", ex: "ربط المنفذ بـVLAN 10. الجهاز المتصل لا يعرف أصلاً أنه داخل VLAN." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+        - { cmd: "interface fastEthernet0/2", ex: "اختيار المنفذ المتصل بـPC-B." }
+        - { cmd: " switchport mode access", ex: "تثبيت المنفذ كـAccess." }
+        - { cmd: " switchport access vlan 20", ex: "ربط المنفذ بـVLAN 20." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+      SW2:
+        - { cmd: "interface fastEthernet0/1", ex: "اختيار المنفذ المتصل بـPC-C." }
+        - { cmd: " switchport mode access", ex: "تثبيت المنفذ كـAccess، ومنع تحوله إلى Trunk بالتفاوض التلقائي (DTP)." }
+        - { cmd: " switchport access vlan 10", ex: "ربط المنفذ بـVLAN 10." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+        - { cmd: "interface fastEthernet0/2", ex: "اختيار المنفذ المتصل بـPC-D." }
+        - { cmd: " switchport mode access", ex: "تثبيت المنفذ كـAccess." }
+        - { cmd: " switchport access vlan 20", ex: "ربط المنفذ بـVLAN 20." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+    verify:
+      cmd: "SW1# show vlan brief"
+      output: |-
+        VLAN Name      Status    Ports
+        ---- --------- --------- ------------------------------
+        1    default   active    Fa0/3, Fa0/4, Gi0/2
+        10   SALES     active    Fa0/1
+        20   IT        active    Fa0/2
+    mistakes:
+      - "نسيان switchport mode access: يبقى المنفذ في الوضع الديناميكي، وقد يتحول إلى Trunk إذا وُصل به جهاز يتفاوض بـDTP. هذه ثغرة اسمها VLAN hopping."
+
+  - title: ضبط الـTrunk
+    idea: >-
+      الكابل بين السويتشين يجب أن يحمل الـVLANين معاً. الـTrunk يضيف لكل إطار وسماً (Tag) حسب معيار 802.1Q
+      فيه رقم الـVLAN، فيعرف السويتش الآخر لمن ينتمي الإطار.
+    highlight: [SW1, SW2]
+    state:
+      nodes:
+        SW1: { tag: "VLAN 1 · 10 · 20 · 99" }
+        SW2: { tag: "VLAN 1 · 10 · 20 · 99" }
+      links:
+        SW1-SW2: { style: trunk, colors: [green, blue], label: "802.1Q trunk · 10,20 · native 99" }
+    commands:
+      SW1: &trunk
+        - { cmd: "vlan 99", ex: "VLAN مخصصة لتكون Native VLAN بدلاً من VLAN 1 الافتراضية، وهذا أكثر أماناً." }
+        - { cmd: " name NATIVE", ex: "اسم وصفي لـVLAN 99." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+        - { cmd: "interface gigabitEthernet0/1", ex: "المنفذ الذي يربط السويتشين ببعض." }
+        - { cmd: " switchport trunk encapsulation dot1q", ex: "تحديد معيار الوسم 802.1Q. مطلوب على سويتشات مثل 3560، ولا يوجد على 2960 لأنه يدعم dot1q فقط." }
+        - { cmd: " switchport mode trunk", ex: "تحويل المنفذ إلى Trunk يحمل أكثر من VLAN على نفس الكابل." }
+        - { cmd: " switchport trunk allowed vlan 10,20", ex: "السماح فقط بالـVLANs التي نحتاجها، بدلاً من تمرير كل الـVLANs." }
+        - { cmd: " switchport trunk native vlan 99", ex: "الإطارات التي تصل بدون وسم تُنسب إلى VLAN 99. يجب أن تتطابق على الطرفين." }
+        - { cmd: " exit", ex: "الرجوع إلى وضع الإعداد العام." }
+      SW2: *trunk
+    verify:
+      cmd: "SW1# show interfaces trunk"
+      output: |-
+        Port    Mode  Encapsulation  Status    Native vlan
+        Gi0/1   on    802.1q         trunking  99
+
+        Port    Vlans allowed on trunk
+        Gi0/1   10,20
+    mistakes:
+      - "Native VLAN مختلفة على الطرفين تُظهر الرسالة: %CDP-4-NATIVE_VLAN_MISMATCH"
+      - "نسيان VLAN من قائمة allowed vlan: الأجهزة في نفس الـVLAN لا تتواصل عبر السويتشين."
+
+  - title: اختبار الاتصال
+    idea: >-
+      جرّب بنفسك من الأزرار تحت المخطط. PC-A و PC-C في نفس الـVLAN مع أنهما على سويتشين مختلفين.
+      أما PC-A و PC-B فعلى نفس السويتش، لكن كلاً منهما في VLAN مختلفة.
+    highlight: [PC-A, PC-C]
+    pingsTitle: جرّب الـping من PC-A
+    pings:
+      - label: "ping PC-C · نفس VLAN 10"
+        path: [PC-A, SW1, SW2, PC-C]
+        result: ok
+        tag: { link: SW1-SW2, text: "802.1Q tag: VLAN 10" }
+        output: |-
+          PC-A> ping 192.168.10.13
+
+          Pinging 192.168.10.13 with 32 bytes of data:
+          Reply from 192.168.10.13: bytes=32 time<1ms TTL=128
+          Reply from 192.168.10.13: bytes=32 time<1ms TTL=128
+          Reply from 192.168.10.13: bytes=32 time<1ms TTL=128
+          Reply from 192.168.10.13: bytes=32 time<1ms TTL=128
+
+          Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)
+      - label: "ping PC-B · VLAN 20"
+        path: [PC-A, SW1]
+        result: drop
+        dropText: "SW1: PC-B في VLAN 20، لا تمرير"
+        output: |-
+          PC-A> ping 192.168.20.12
+
+          Pinging 192.168.20.12 with 32 bytes of data:
+          Request timed out.
+          Request timed out.
+          Request timed out.
+          Request timed out.
+
+          Packets: Sent = 4, Received = 0, Lost = 4 (100% loss)
+    commands:
+      PC-A:
+        - { cmd: "ipconfig", ex: "عنوان PC-A هو 192.168.10.11/24." }
+        - { cmd: "ping 192.168.10.13", ex: "اختبار الوصول إلى PC-C في نفس VLAN 10." }
+        - { cmd: "ping 192.168.20.12", ex: "اختبار الوصول إلى PC-B في VLAN 20." }
+    mistakes:
+      - "فشل الـping بين VLAN 10 و VLAN 20 هو السلوك الصحيح. للربط بينهما تحتاج إلى راوتر، وهذا موضوع مختبر Router on a stick."
+
+  - title: حفظ الإعدادات
+    idea: كل ما كتبناه موجود في running-config داخل الذاكرة المؤقتة. إذا انقطعت الكهرباء يضيع كله، لذلك ننسخه إلى startup-config.
+    highlight: [SW1, SW2]
+    commands:
+      SW1: &save
+        - { cmd: "end", ex: "الخروج مباشرة إلى وضع الصلاحيات من أي مستوى." }
+        - { cmd: "copy running-config startup-config", ex: "حفظ الإعدادات بشكل دائم في الذاكرة غير المتطايرة. الاختصار: write memory." }
+      SW2: *save
+    verify:
+      cmd: "SW1# copy running-config startup-config"
+      output: |-
+        Destination filename [startup-config]?
+        Building configuration...
+        [OK]
+    mistakes:
+      - "إعادة تشغيل السويتش قبل الحفظ: يعود كل شيء إلى VLAN 1."
+
+summary:
+  intro: أنشأت شبكتين منفصلتين على نفس العتاد، وربطت السويتشين برابط واحد يحمل الاثنتين. هذه كل الأوامر المستخدمة في المختبر في مكان واحد.
+  challenge:
+    q: "تحدٍّ: أضف VLAN 30 باسم GUEST على المنفذ Fa0/3 في السويتشين. ما الأمر الذي يجب تعديله على الـTrunk؟"
+    a: "الأمر هو `switchport trunk allowed vlan add 30`. انتبه لكلمة `add`: بدونها يستبدل السويتش القائمة كلها بـ30 فقط، فينقطع VLAN 10 و VLAN 20 فوراً."
+  files: ["ملف Packet Tracer (.pkt) · قريباً", "طوبولوجيا containerlab · قريباً"]
+  short: { title: "شاهد الفيديو القصير: ما هو الـVLAN؟", href: "/#v-vlan" }

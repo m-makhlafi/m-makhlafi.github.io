@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import { floors } from "../data/journey";
+import { site } from "../data/site";
+import { url } from "../lib/url";
+const dateClass = (d: string) => (/^[0-9 .\-]+$/.test(d) ? "mono" : "");
+---
+<Base title={`رحلتي | ${site.name}`} description="رحلة ثلاثية الأبعاد في مسيرة محمد المخلافي: من مقاعد الجامعة وكابلات الميدان إلى السيرفرات والكود وتصميم الأنظمة.">
+  <div class="jr" id="jr">
+    <canvas id="jrCanvas" aria-hidden="true"></canvas>
+    <div class="jr-callouts" id="jrCallouts" aria-hidden="true"></div>
+
+    <nav class="jr-nav" aria-label="طوابق الرحلة">
+      <ol>
+        {floors.map((f, i) => (
+          <li style={`--wire:var(--${f.color})`}>
+            <button type="button" aria-current={i === 0 ? "step" : "false"}>
+              <span class={dateClass(f.when)}>{f.when}</span><span class="t">{f.title}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <button type="button" class="jr-light" id="jrLight" aria-pressed="false" title="يقلل المؤثرات للأجهزة الأضعف">وضع خفيف</button>
+    </nav>
+
+    <div class="jr-zoom" role="group" aria-label="التحكم في العمق">
+      <button type="button" id="jrZoomIn" title="اقترب (Ctrl + عجلة الماوس)" aria-label="تقريب">+</button>
+      <button type="button" id="jrZoomOut" title="ابتعد" aria-label="تبعيد">−</button>
+      <button type="button" id="jrZoomReset" title="عرض الطابق كاملاً" aria-label="عرض كامل">⟲</button>
+      <span class="jr-zoom-hint">اسحب للتدوير · نقرتان للغوص في جهاز</span>
+    </div>
+
+    <header class="jr-intro">
+      <p class="kicker">the journey · 3D</p>
+      <h1>رحلتي</h1>
+      <p>برج من {floors.length} طوابق، كل طابق فصل من القصة. انزل بالتمرير لتصعد معي، واضغط أي مجسم لترى ما فعلته به. اقترب بزر + أو Ctrl مع العجلة، وانقر مرتين على جهاز لتغوص فيه.</p>
+      <a class="btn" href={url()}>العودة للصفحة الرئيسية</a>
+    </header>
+
+    <div class="jr-steps">
+      {floors.map((f, i) => (
+        <section class="jr-step" id={`f-${f.id}`} aria-labelledby={`h-${f.id}`}>
+          <article class="jr-card" style={`--wire:var(--${f.color})`}>
+            <div class="jr-meta">
+              <span class={`jr-date ${dateClass(f.when)}`}>{f.when}</span>
+              <span>الطابق {i + 1} من {floors.length}</span>
+            </div>
+            <h2 id={`h-${f.id}`}>{f.title}</h2>
+            {f.role && <p class="jr-role">{f.role}</p>}
+            <p class="jr-story">{f.story}</p>
+            <div class="jr-techs">
+              {f.techs.map((t, k) => <button type="button" data-floor={i} data-tech={k}>{t.name}</button>)}
+            </div>
+          </article>
+        </section>
+      ))}
+    </div>
+
+    <div class="jr-end">
+      <h2>والرحلة مستمرة</h2>
+      <p>متاح الآن لفرص جديدة.</p>
+      <div class="cta">
+        <a class="btn primary" href={url("#contact")}>تواصل معي</a>
+        <a class="btn" href={url("#projects")}>المشاريع</a>
+      </div>
+    </div>
+
+    <div class="jr-tip" id="jrTip" role="status" hidden><b></b><p></p></div>
+    <noscript><p class="hint">الرحلة ثلاثية الأبعاد تحتاج JavaScript، وكل نصوصها ظاهرة في البطاقات.</p></noscript>
+  </div>
+  <script id="journey-data" type="application/json" set:html={JSON.stringify({ floors, email: site.email }).replace(/</g, "\\u003c")} />
+</Base>
+
+<script>
+  import "../scripts/journey.js";
+</script>

@@ -1,0 +1,29 @@
+---
+import { site } from "../data/site";
+import { url } from "../lib/url";
+
+const home = url();
+const links = [
+  { href: "journey/", port: ":3d", label: "رحلتي", page: true },
+  { href: "#about", port: ":22", label: "من أنا" },
+  { href: "#skills", port: ":8080", label: "المهارات" },
+  { href: "#projects", port: ":80", label: "المشاريع" },
+  { href: "#netlab", port: ":9090", label: "المختبر" },
+  { href: "labs/", port: ":69", label: "المختبرات", page: true },
+  { href: "#content", port: ":443", label: "المحتوى" },
+  { href: "#contact", port: ":25", label: "تواصل" },
+];
+---
+<header class="topbar">
+  <a class="brand" href={home} aria-label="الصفحة الرئيسية">
+    <span class="prompt"><span>{site.handle}@lab</span>:~$ <i class="caret"></i></span>
+  </a>
+  <nav aria-label="أقسام الموقع">
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.page ? url(l.href) : home + l.href}><span class="mono">{l.port}</span>{l.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button">تبديل المظهر</button>
+</header>

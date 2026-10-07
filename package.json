@@ -1,0 +1,1 @@
+{"name":"portfolio-site","type":"module","version":"0.1.0","private":true,"scripts":{"dev":"astro dev","build":"astro build","preview":"astro preview"},"dependencies":{"astro":"^7.3.5","n8ao":"^2.0.1","three":"^0.186.1"}}

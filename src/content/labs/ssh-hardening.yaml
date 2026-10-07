@@ -1,0 +1,8 @@
+title: تأمين SSH
+category: linux
+level: مبتدئ
+minutes: 20
+commandsCount: 15
+order: 9
+status: soon
+keywords: [ssh, sshd, keys, fail2ban]

@@ -1,0 +1,254 @@
+---
+import Base from "../layouts/Base.astro";
+import NetLab from "../components/NetLab.astro";
+import LabCatalog from "../components/LabCatalog.astro";
+import { site } from "../data/site";
+import { racks, projects, series, shorts, platforms, changelog } from "../data/portfolio";
+import { url } from "../lib/url";
+import { floors } from "../data/journey";
+
+const seriesById = Object.fromEntries(series.map((s) => [s.id, s]));
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div>
+      <span class="eyebrow rise"><i class="led pulse"></i>status: open to work · {site.heroIp}</span>
+      <h1 class="rise d1">أشرح <em>البرمجة</em> و<span class="u">الشبكات</span><br />كما تعمل فعلاً</h1>
+      <p class="lead rise d2">صانع محتوى تقني بالعربية. فيديوهات قصيرة تشرح الكود والسيرفرات، وكيف تنتقل البيانات من جهازك إلى الطرف الآخر من العالم في أجزاء من الثانية.</p>
+      <div class="cta rise d3">
+        <a class="btn primary" href="#content">شاهد الفيديوهات القصيرة</a>
+        <a class="btn" href={url("labs/")}>تصفح المختبرات</a>
+      </div>
+      <div class="tracks rise d4">
+        {site.tracks.map((t) => <span class="chip"><i style={`background:var(--${t.color})`}></i>{t.label}</span>)}
+      </div>
+    </div>
+
+    <div class="console rise d2" aria-label="رسم متحرك لشبكة منزلية وطرفية">
+      <div class="console-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span>network-topology — simulation</span>
+        <span id="pktCount">0 pkts</span>
+      </div>
+      <canvas id="topo" role="img" aria-label="مخطط شبكة: الإنترنت، راوتر، سويتش، سيرفرين، وحدة تخزين، وجهاز محمول، تنتقل بينها حزم بيانات ملونة"></canvas>
+      <div class="term"><span class="p">{site.handle}@lab:~$</span> <span class="c">ssh admin@srv-01</span>
+<span class="ok">Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8 x86_64)</span>
+<span class="p">admin@srv-01:~$</span> <span class="c">ping -c 3 10.0.0.1</span>
+<span id="pingLines">64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=0.42 ms</span></div>
+    </div>
+  </section>
+
+  <div class="status">
+    {site.status.map((s) => <span>{s.prefix ? s.prefix + " " : ""}<strong>{s.strong}</strong> {s.text}</span>)}
+    <span class="mono">lang=ar · 1080×1920</span>
+  </div>
+
+  <a class="jr-teaser" href={url("journey/")}>
+    <span class="floors" aria-hidden="true">
+      {[...floors].reverse().map((f) => <i style={`--c:var(--${f.color})`}></i>)}
+    </span>
+    <span>
+      <h2>ابدأ رحلتي ثلاثية الأبعاد</h2>
+      <p>برج من {floors.length} طوابق، من مقاعد الجامعة عام 2020 إلى سما تاكسي: الكابلات والكاميرات، والشبكات، والسيرفرات، والكود، وتصميم الأنظمة.</p>
+    </span>
+    <span class="btn primary">ادخل ←</span>
+  </a>
+
+  <!-- ABOUT -->
+  <section class="block" id="about">
+    <div class="sec-head">
+      <span class="port">:22 ssh</span>
+      <h2>من أنا</h2>
+    </div>
+    <div class="about">
+      <div class="text">
+        {site.about.paragraphs.map((p) => <p set:html={p} />)}
+      </div>
+      <dl class="spec-list">
+        {site.about.specs.map((s) => (
+          <div><dt>{s.k}</dt><dd class={s.open ? "open-to-work" : undefined}>{s.open && <i class="led pulse"></i>}{s.v}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="block" id="skills">
+    <div class="sec-head">
+      <span class="port">:8080 stack</span>
+      <h2>المهارات مركّبة على الرف</h2>
+      <p>كل مهارة وحدة داخل رف سيرفرات. لون الوحدة يتبع ألوان أزواج كابل الإيثرنت T568B، والأضواء تومض كأنها تعمل الآن.</p>
+    </div>
+    <div class="racks">
+      {racks.map((r) => (
+        <div class="rack">
+          <div class="rack-title"><h3>{r.title}</h3><span class="mono">{r.id} · {r.units.length}U</span></div>
+          <div class="units">
+            {r.units.map((u, i) => (
+              <div class="unit" style={`--wire:var(--${u.color})`}>
+                <span class="u-no">U{i + 1}</span>
+                <span class="name">
+                  <b>{u.name}</b><small>{u.note}</small>
+                </span>
+                <span class="leds"><i></i><i></i><i></i></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="sec-head">
+      <span class="port">:80 http</span>
+      <h2>المشاريع</h2>
+      <p>مشاريعي على GitHub. بعضها منتجات كودها المصدري خاص وتُعرض تفاصيلها عند الطلب، وبعضها قيد البناء وأنشر خطتها أولاً ثم الكود على مراحل.</p>
+    </div>
+    <div class="projects">
+      {projects.map((p) => (
+        <article class="proj" style={`--wire:var(--${p.color})`}>
+          <div class="proj-top"><span class="mono">{p.path}</span><span class={p.status === "production" ? "pill" : "pill wip"}>{p.status === "production" ? "● production" : "◐ building in public"}</span></div>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <div class="tags">{p.tags.map((t) => <span>{t}</span>)}</div>
+          <a class="proj-try" href={p.href} target="_blank" rel="noopener">عرض على GitHub ←</a>
+          <div class="proj-foot"><span>{p.footL}</span><span>source <b>{p.status === "production" ? "private" : "in progress"}</b></span></div>
+        </article>
+      ))}
+    </div>
+    <p class="hint" style="margin-top:14px"><a href="https://github.com/m-makhlafi" target="_blank" rel="noopener">كل المستودعات على GitHub ←</a></p>
+  </section>
+
+  <NetLab />
+
+  <!-- LAB LIBRARY -->
+  <section class="block" id="labs">
+    <div class="sec-head">
+      <span class="port">:69 tftp</span>
+      <h2>مكتبة المختبرات</h2>
+      <p>كل موضوع مختبر مستقل: كيف يعمل، وكل أمر يُستخدم لضبطه، وكيف تتحقق أنه يعمل.</p>
+    </div>
+    <LabCatalog />
+  </section>
+
+  <!-- CONTENT -->
+  <section class="block" id="content">
+    <div class="sec-head">
+      <span class="port">:443 https</span>
+      <h2>المحتوى القصير</h2>
+      <p>الموسم الأول: 30 فيديو في أربع سلاسل. اضغط أي بطاقة لتشاهد الفيديو، ولون البطاقة يحدد السلسلة التي تنتمي لها.</p>
+    </div>
+    <div class="shorts-filter" id="shortsFilter" role="group" aria-label="تصفية حسب السلسلة">
+      <button type="button" data-f="all" aria-pressed="true">الكل</button>
+      {series.map((s) => <button type="button" data-f={s.id} aria-pressed="false">{s.label}</button>)}
+    </div>
+    <div class="shorts" id="shorts">
+      {shorts.map((v, i) => {
+        const s = seriesById[v.s];
+        // the grid shows a small WebP thumbnail; the full poster is only used by the player
+        const poster = v.video?.type === "file" ? v.video.thumb || v.video.poster
+          : v.video?.type === "youtube" ? `https://i.ytimg.com/vi/${v.video.id}/mqdefault.jpg` : undefined;
+        return (
+          <button type="button" class={poster ? "short has-poster" : "short"} data-i={i} data-s={v.s}
+            style={`--wire:var(--${s.color})`} aria-label={`شاهد: ${v.title}`}>
+            {poster && <img class="short-poster" src={poster.startsWith("http") ? poster : url(poster)} alt="" loading="lazy" decoding="async" width="360" height="640" />}
+            <span class="series">{s.label}</span>
+            {!poster && <span class="glyph">{v.glyph}</span>}
+            <span>
+              <h3>{v.title}</h3>
+              <span class="meta">{v.video ? <span>{v.dur}</span> : <span class="soon-label">قيد الإنتاج</span>}{v.video ? <span class="play"></span> : <span class="soon-dot"></span>}</span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+    <div class="platforms">
+      <span>تُنشر على:</span>
+      {platforms.map((p) => <span class="chip">{p}</span>)}
+    </div>
+
+    <dialog class="player" id="player" aria-labelledby="plTitle">
+      <div class="pl-wrap">
+        <div class="pl-stage" id="plStage">
+          <div class="pl-frame" id="plFrame"></div>
+        </div>
+        <div class="pl-info">
+          <div class="pl-top">
+            <span class="chip" id="plSeries"></span>
+            <span class="pl-count" id="plCount"></span>
+            <button type="button" class="ghost-btn" id="plClose">إغلاق ✕</button>
+          </div>
+          <h2 id="plTitle"></h2>
+          <p class="pl-desc" id="plDesc"></p>
+          <div>
+            <h4 class="pl-h">في هذا الفيديو</h4>
+            <ul class="pl-points" id="plPoints"></ul>
+          </div>
+          <a class="btn pl-lab" id="plLab" hidden></a>
+          <div>
+            <h4 class="pl-h">شاهده على</h4>
+            <div class="tracks" id="plLinks"></div>
+          </div>
+          <div class="pl-steps">
+            <button type="button" class="btn" id="plPrev">→ السابق</button>
+            <button type="button" class="btn primary" id="plNext">التالي ←</button>
+          </div>
+          <p class="hint">الأسهم للتنقل · Esc للإغلاق · على الجوال اسحب الفيديو للأعلى للتالي</p>
+        </div>
+      </div>
+    </dialog>
+    <script id="shorts-data" type="application/json"
+      set:html={JSON.stringify({ base: url(""), series: seriesById, items: shorts }).replace(/</g, "\\u003c")} />
+  </section>
+
+  <!-- CHANGELOG -->
+  <section class="block" id="journey">
+    <div class="sec-head">
+      <span class="port">CHANGELOG.md</span>
+      <h2>سجل الإصدارات</h2>
+      <p>المسيرة مكتوبة بأسلوب سجل تغييرات البرمجيات. كل محطة إصدار جديد.</p>
+    </div>
+    <div class="log">
+      {changelog.map((e) => (
+        <div class="entry" style={`--wire:var(--${e.color})`}><span class="ver">{e.ver}</span><div><h3>{e.title}</h3><p>{e.text}</p></div></div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="block" id="contact">
+    <div class="sec-head">
+      <span class="port">:25 smtp</span>
+      <h2>تواصل</h2>
+    </div>
+    <div class="contact">
+      <div class="contact-info">
+        <p>للتعاون في محتوى تقني، أو رعاية فيديو، أو اقتراح موضوع للسلسلة القادمة.</p>
+        <div class="copy-row">
+          <span class="mono" id="mail">{site.email}</span>
+          <button type="button" id="copyBtn">نسخ</button>
+        </div>
+        <div class="tracks">
+          {site.socials.map((s) => <a class="chip" href={s.href} target="_blank" rel="noopener" style="text-decoration:none">{s.label}</a>)}
+        </div>
+      </div>
+      <form class="card" id="contactForm" novalidate>
+        <div class="field"><label for="cf-name">الاسم</label><input id="cf-name" name="name" type="text" placeholder="اسمك" /></div>
+        <div class="field"><label for="cf-type">نوع الطلب</label>
+          <select id="cf-type" name="type"><option>اقتراح موضوع فيديو</option><option>تعاون أو رعاية</option><option>سؤال تقني</option></select>
+        </div>
+        <div class="field"><label for="cf-msg">الرسالة</label><textarea id="cf-msg" name="msg" placeholder="مثال: أقترح فيديو يشرح الفرق بين TCP و UDP."></textarea></div>
+        <button class="btn primary" type="submit">إرسال الرسالة</button>
+        <p class="form-msg" id="formMsg" hidden>نموذج الإرسال لم يُربط بعد. راسلني على البريد المكتوب بجانبه.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import "../scripts/hero.js";
+  import "../scripts/player.js";
+</script>

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import { url } from "../lib/url";
+
+const CATS: Record<string, [string, string]> = {
+  switching: ["Switching", "blue"],
+  routing: ["Routing", "accent"],
+  services: ["خدمات الشبكة", "brown"],
+  linux: ["سيرفرات Linux", "green"],
+  vpn: ["VPN و Docker", "blue"],
+};
+const labs = (await getCollection("labs")).sort((a, b) => a.data.order - b.data.order);
+const countCommands = (lab: (typeof labs)[number]) => {
+  if (lab.data.commandsCount) return lab.data.commandsCount;
+  const seen = new Set<string>();
+  lab.data.steps.forEach((s) => Object.values(s.commands).forEach((ls) => ls.forEach((l) => {
+    const c = l.cmd.trim();
+    if (c !== "exit") seen.add(c);
+  })));
+  return seen.size;
+};
+---
+<div data-catalog>
+  <div class="cat-tools">
+    <div class="shorts-filter" role="group" aria-label="تصفية حسب المجال" style="margin:0">
+      <button type="button" data-filter="all" aria-pressed="true">الكل</button>
+      {Object.entries(CATS).map(([k, v]) => <button type="button" data-filter={k} aria-pressed="false">{v[0]}</button>)}
+    </div>
+    <input type="search" placeholder="ابحث: vlan، ospf، ssh…" aria-label="بحث في المختبرات" />
+  </div>
+  <div class="cat-grid">
+    {labs.map((lab) => {
+      const d = lab.data, cat = CATS[d.category];
+      const avail = d.status === "available";
+      const keys = [d.title, ...d.keywords].join(" ");
+      const inner = (
+        <>
+          <span class="cat">{cat[0]}</span>
+          <h3>{d.title}</h3>
+          <span class="meta"><span>{d.level}</span><span>{d.minutes} دقيقة</span><span>{countCommands(lab)} أمراً</span></span>
+          <span class={avail ? "pill" : "pill soon"}>{avail ? "● افتح المختبر" : "قريباً · نفس القالب"}</span>
+        </>
+      );
+      return avail ? (
+        <a class="lab-card" href={url(`labs/${lab.id}/`)} data-cat={d.category} data-k={keys} style={`--wire:var(--${cat[1]});text-decoration:none`}>{inner}</a>
+      ) : (
+        <div class="lab-card" data-cat={d.category} data-k={keys} style={`--wire:var(--${cat[1]})`}>{inner}</div>
+      );
+    })}
+  </div>
+  <p class="empty" data-empty hidden>لا توجد مختبرات مطابقة. جرّب كلمة أخرى.</p>
+</div>
+<script>
+  import "../scripts/catalog.js";
+</script>

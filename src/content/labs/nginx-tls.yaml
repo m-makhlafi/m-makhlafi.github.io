@@ -1,0 +1,8 @@
+title: Nginx Reverse Proxy مع TLS
+category: linux
+level: متوسط
+minutes: 35
+commandsCount: 21
+order: 10
+status: soon
+keywords: [nginx, proxy, tls, certbot, https]

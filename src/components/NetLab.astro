@@ -1,0 +1,99 @@
+---
+// Interactive home-lab showcase. Logic lives in src/scripts/netlab.js
+---
+<section class="block" id="netlab">
+  <div class="sec-head">
+    <span class="port">:9090 lab</span>
+    <h2>المختبر التفاعلي</h2>
+    <p>محاكاة تفاعلية لشبكة شركة صغيرة. افتح الشبكة نفسها، وأرسل حزم البيانات، وافصل الكابلات لترى ما يحدث.</p>
+  </div>
+  <div class="how">
+    <div><b>استكشف<span class="mono">click</span></b><span>اضغط أي جهاز في المخطط لترى عنوانه ودوره ومثالاً على إعداداته.</span></div>
+    <div><b>تتبّع<span class="mono">traceroute</span></b><span>اختر مصدراً ووجهة، وشاهد الحزمة تمر بالسويتش والجدار الناري خطوة بخطوة.</span></div>
+    <div><b>اكسر شيئاً<span class="mono">failover</span></b><span>افصل كابلاً أو اضغط على سيرفر، وراقب كيف تتصرف الشبكة وكيف يصل التنبيه.</span></div>
+  </div>
+
+  <div class="lab">
+    <div class="lab-tabs" role="tablist" aria-label="أدوات المختبر">
+      <button type="button" role="tab" id="tb-lab" aria-controls="tab-lab" aria-selected="true" data-tab="lab"><span class="mono">01</span>شبكة شركة صغيرة</button>
+      <button type="button" role="tab" id="tb-mon" aria-controls="tab-mon" aria-selected="false" data-tab="mon"><span class="mono">02</span>لوحة المراقبة الحية</button>
+      <button type="button" role="tab" id="tb-calc" aria-controls="tab-calc" aria-selected="false" data-tab="calc"><span class="mono">03</span>حاسبة الـSubnet</button>
+    </div>
+
+    <!-- Tab: topology -->
+    <div class="lab-panel" role="tabpanel" id="tab-lab" aria-labelledby="tb-lab">
+      <div class="scen" id="scenarios"><span>سيناريوهات جاهزة:</span></div>
+      <div class="lab-toolbar">
+        <label class="ctrl" for="srcSel">المصدر<select id="srcSel"></select></label>
+        <label class="ctrl" for="dstSel">الوجهة<select id="dstSel"></select></label>
+        <button class="btn primary" type="button" id="sendBtn">أرسل الحزمة</button>
+        <label class="toggle" for="vlanToggle"><input type="checkbox" id="vlanToggle" checked>إظهار الـVLANs</label>
+        <button class="ghost-btn" type="button" id="resetLinks">أعد توصيل الكابلات</button>
+      </div>
+      <div class="topo-grid">
+        <div>
+          <div class="topo-scroll"><svg id="labSvg" viewBox="0 0 720 390" role="group" aria-label="مخطط شبكة شركة صغيرة"></svg></div>
+          <p class="hint" style="margin-top:8px">اضغط على أي كابل لفصله أو إعادة توصيله، ثم أرسل حزمة تمر به.</p>
+        </div>
+        <div class="side">
+          <div class="dev-card" aria-live="polite">
+            <h3><span id="devTitle">pfSense</span><span class="mono" id="devIp">10.0.0.1</span></h3>
+            <p class="role" id="devRole"></p>
+            <dl class="kv" id="devKv"></dl>
+            <pre class="cfg" id="devCfg"></pre>
+          </div>
+          <div class="hoplog" id="hopLog" aria-live="polite"></div>
+          <p class="verdict" id="verdict">اختر سيناريو أو مصدراً ووجهة، ثم اضغط "أرسل الحزمة".</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: monitoring -->
+    <div class="lab-panel" role="tabpanel" id="tab-mon" aria-labelledby="tb-mon" hidden>
+      <div class="lab-toolbar">
+        <button class="btn primary" type="button" id="stressBtn">حاكِ ضغطاً على srv-02</button>
+        <span class="hint">القيم محاكاة في المتصفح لتوضيح طريقة العرض. في النسخة النهائية تأتي من Prometheus مباشرة.</span>
+      </div>
+      <div class="mon-grid">
+        <div class="srv-list" id="srvList"></div>
+        <div class="chat" aria-live="polite">
+          <div class="chat-head"><span>uptime-bot · Telegram</span><span class="pill">● متصل</span></div>
+          <div id="chatMsgs" style="display:grid;gap:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: subnet calculator -->
+    <div class="lab-panel" role="tabpanel" id="tab-calc" aria-labelledby="tb-calc" hidden>
+      <div class="calc">
+        <div class="calc-in">
+          <div class="field"><label for="ipIn">عنوان IP</label><input type="text" id="ipIn" value="192.168.1.77" inputmode="decimal" autocomplete="off" spellcheck="false"></div>
+          <div class="field"><label for="prefIn">طول البادئة (Prefix)</label>
+            <div class="prefix-row"><input type="range" id="prefIn" min="8" max="30" value="26"><output id="prefOut" for="prefIn">/26</output></div>
+          </div>
+          <div class="presets" id="presets">
+            <button class="ghost-btn" type="button" data-p="24">/24 شبكة منزلية</button>
+            <button class="ghost-btn" type="button" data-p="26">/26 قسم صغير</button>
+            <button class="ghost-btn" type="button" data-p="30">/30 ربط راوترين</button>
+          </div>
+          <p class="err" id="ipErr" hidden>العنوان غير صحيح. اكتب أربعة أرقام بين 0 و255 تفصلها نقاط، مثل 10.0.0.5</p>
+        </div>
+        <div style="display:grid;gap:14px;align-content:start">
+          <div class="res" id="calcRes">
+            <div><span>عنوان الشبكة</span><b id="rNet"></b></div>
+            <div><span>قناع الشبكة</span><b id="rMask"></b></div>
+            <div><span>أول جهاز</span><b id="rFirst"></b></div>
+            <div><span>آخر جهاز</span><b id="rLast"></b></div>
+            <div><span>عنوان البث (Broadcast)</span><b id="rBc"></b></div>
+            <div><span>عدد الأجهزة الممكنة</span><b id="rHosts"></b></div>
+          </div>
+          <div class="bits" id="bits" aria-label="العنوان بالنظام الثنائي"></div>
+          <p class="calc-note" id="calcNote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import "../scripts/netlab.js";
+</script>
