@@ -23,7 +23,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # npm install, not npm ci: the lockfile is written on Windows and misses Linux-only optional peers (@emnapi/*)
+      - run: npm install --no-audit --no-fund
       - run: npm run build
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
