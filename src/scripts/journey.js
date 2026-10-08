@@ -84,8 +84,6 @@ const mixers = [];
    Starts from what the device reports, then steps down by itself if frames run slow. */
 const LIGHT_KEY = "jr-light";
 function detectTier() {
-  const forced = location.search.match(/[?&]tier=([0-2])/); // testing hook
-  if (forced) return +forced[1];
   try { if (localStorage.getItem(LIGHT_KEY) === "1") return 0; } catch (e) {}
   if (reduce) return 0;
   const gl = renderer.getContext();
@@ -1056,5 +1054,4 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) kick
   [...floorGroups].map((g, k) => [g, Math.abs(k - cur)]).sort((a, b) => a[1] - b[1]).forEach(([g]) => prepTextures(g));
   // fetch the rack while the visitor reads, not when they arrive
   idle(() => { lazy.splice(0).forEach((l) => l.run()); }, { timeout: 4000 });
-  if (location.search.includes("debug")) window.__jr = { renderer, Q, view, get cur() { return cur; } };
 });
