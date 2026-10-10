@@ -301,7 +301,7 @@ function fitDistance(r) {
   const w = window.innerWidth, h = window.innerHeight;
   const v = THREE.MathUtils.degToRad(camera.fov);
   let fx, fy;
-  if (mobile) { fx = 0.92; fy = 0.5; }
+  if (mobile) { fx = 0.9; fy = Math.max(0.4, (cvs.height - topH - 16) / cvs.height); }
   else { fx = (free.right - free.left) / w; fy = (h - free.top - 20) / h; }
   const vEff = 2 * Math.atan(Math.tan(v / 2) * fy);
   const hEff = 2 * Math.atan(Math.tan(v / 2) * camera.aspect * fx);
@@ -745,24 +745,95 @@ function readScroll() {
     if (mid >= top) f = k + Math.min(1, (mid - top) / (next - top)) - 0.5;
   }
   target = Math.max(0, Math.min(floors.length - 1, f));
+  if (mobile) syncSheet();
 }
 window.addEventListener("scroll", readScroll, { passive: true });
 navBtns.forEach((b, k) => b.addEventListener("click", () => steps[k].scrollIntoView({ behavior: reduce ? "auto" : "smooth" })));
 
 let mobile = false;
+// Phones (same breakpoint as the CSS): the canvas only covers the top SCENE share of the screen and the
+// story sits in a fixed bottom sheet, so text and 3D never overlap. Fewer pixels to draw, too.
+const phoneMQ = window.matchMedia("(max-width: 860px)");
+const SCENE = 0.56;
+const cvs = { left: 0, top: 0, width: 1, height: 1 }; // canvas box on screen (it is fixed, so this only changes on resize)
+let topH = 0;
 function resize() {
   const w = window.innerWidth, h = window.innerHeight;
-  mobile = w < 860;
-  renderer.setSize(w, h, false);
+  mobile = phoneMQ.matches;
+  const ch = mobile ? Math.round(h * SCENE) : h;
+  canvas.style.height = mobile ? ch + "px" : "";
+  root.style.setProperty("--scene-h", ch + "px");
+  const bar = document.querySelector(".topbar");
+  topH = bar ? bar.getBoundingClientRect().height : 0;
+  renderer.setSize(w, ch, false);
   if (composer) {
     composer.setPixelRatio(renderer.getPixelRatio());
-    composer.setSize(w, h);
+    composer.setSize(w, ch);
     ao.setQualityMode(mobile ? "Low" : "Medium");
   }
-  camera.aspect = w / h;
-  if (mobile) camera.setViewOffset(w, h, 0, h * 0.22, w, h);
+  camera.aspect = w / ch;
+  // phones: centre the scene in the part below the top bar
+  if (mobile) camera.setViewOffset(w, ch, 0, -topH / 2, w, ch);
   else { measureFree(); camera.setViewOffset(w, h, w / 2 - (free.left + free.right) / 2, -(free.top / 2), w, h); }
   camera.updateProjectionMatrix();
+  const r = canvas.getBoundingClientRect();
+  Object.assign(cvs, { left: r.left, top: r.top, width: r.width || 1, height: r.height || 1 });
+  syncSheet(true);
+}
+// screen point <-> normalised device coordinates of the canvas (not the window: on phones the canvas is shorter)
+const toNDC = (x, y, v) => v.set(((x - cvs.left) / cvs.width) * 2 - 1, -((y - cvs.top) / cvs.height) * 2 + 1);
+const toScreenX = (ndcX) => cvs.left + (ndcX + 1) / 2 * cvs.width;
+const toScreenY = (ndcY) => cvs.top + (1 - ndcY) / 2 * cvs.height;
+
+/* ---------- phone story sheet ----------
+   Shows the intro, then the active floor's card, then the ending, swapped as you scroll.
+   The cards in the page keep their place (they set the scroll length) but are hidden by CSS on phones. */
+const sheet = document.getElementById("jrSheet");
+const sheetIn = document.getElementById("jrSheetIn");
+const sheetCount = document.getElementById("jrCount");
+const sheetPrev = document.getElementById("jrPrev"), sheetNext = document.getElementById("jrNext");
+const introEl = document.querySelector(".jr-intro"), endEl = document.querySelector(".jr-end");
+const cardEls = [...document.querySelectorAll(".jr-step .jr-card")];
+let sheetState = null, footerOn = false;
+function sheetSource() {
+  if (!stepTops.length) return { key: "f0", el: cardEls[0], floor: 0 };
+  const mid = window.scrollY + window.innerHeight * 0.5;
+  if (mid < stepTops[0]) return { key: "intro", el: introEl, floor: -1 };
+  if (mid > stepEnd) return { key: "end", el: endEl, floor: floors.length };
+  const k = Math.max(0, Math.min(floors.length - 1, Math.round(target)));
+  return { key: "f" + k, el: cardEls[k], floor: k };
+}
+function syncSheet(force) {
+  if (!sheet) return;
+  sheet.hidden = !mobile;
+  if (!mobile) return;
+  sheet.classList.toggle("away", footerOn);
+  const src = sheetSource();
+  if (!force && src.key === sheetState) return;
+  if (sheetState !== null && src.key !== sheetState) tip.hidden = true; // a tip belongs to the floor it was opened on
+  sheetState = src.key;
+  const copy = src.el.cloneNode(true);
+  copy.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
+  copy.removeAttribute("id");
+  sheetIn.replaceChildren(...copy.childNodes);
+  sheet.style.setProperty("--wire", src.floor >= 0 && src.floor < floors.length ? `var(--${floors[src.floor].color})` : "var(--accent)");
+  sheetIn.scrollTop = 0;
+  sheetIn.classList.remove("swap"); void sheetIn.offsetWidth; sheetIn.classList.add("swap");
+  sheetCount.textContent = src.floor < 0 ? "البداية" : src.floor >= floors.length ? "النهاية" : `الطابق ${src.floor + 1} من ${floors.length}`;
+  sheetPrev.disabled = src.floor < 0;
+  sheetNext.disabled = src.floor >= floors.length;
+}
+const goStep = (k) => {
+  if (k < 0) window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  else if (k >= floors.length) endEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  else window.scrollTo({ top: stepTops[k] + steps[k].offsetHeight / 2 - window.innerHeight / 2, behavior: reduce ? "auto" : "smooth" });
+};
+if (sheet) {
+  sheetPrev.addEventListener("click", () => goStep(sheetSource().floor - 1));
+  sheetNext.addEventListener("click", () => goStep(sheetSource().floor + 1));
+  // the sheet steps aside when the footer arrives
+  const foot = document.querySelector("footer");
+  if (foot && window.IntersectionObserver) new IntersectionObserver(([e]) => { footerOn = e.isIntersecting; syncSheet(); }).observe(foot);
 }
 window.addEventListener("resize", resize);
 
@@ -860,9 +931,9 @@ canvas.addEventListener("touchend", (e) => { if (e.touches.length < 2) pinch = n
 
 /* ---------- picking ---------- */
 const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
-let flashObj = null, flashUntil = 0;
+let flashObj = null, flashUntil = 0, tipTimer = 0;
 function pickAt(cx, cy) {
-  ptr.set((cx / window.innerWidth) * 2 - 1, -(cy / window.innerHeight) * 2 + 1);
+  toNDC(cx, cy, ptr);
   ray.setFromCamera(ptr, camera);
   const hit = ray.intersectObjects(clickables, false)
     .find((h) => Math.abs(h.object.userData.pickRoot.userData.pick.floor - cur) < 0.75);
@@ -878,7 +949,11 @@ function showTip(obj, x, y) {
   tip.hidden = false;
   const r = tip.getBoundingClientRect();
   tip.style.left = Math.max(12, Math.min(window.innerWidth - r.width - 12, x - r.width / 2)) + "px";
-  tip.style.top = Math.max(70, Math.min(window.innerHeight - r.height - 12, y + 18)) + "px";
+  // phones: keep it inside the scene, under the zoom buttons, and let it go by itself
+  const minTop = mobile ? topH + 52 : 70, maxTop = (mobile ? cvs.top + cvs.height : window.innerHeight) - r.height - 12;
+  tip.style.top = Math.max(minTop, Math.min(maxTop, y + 18)) + "px";
+  clearTimeout(tipTimer);
+  if (mobile) tipTimer = setTimeout(() => { tip.hidden = true; }, 4500);
   flashObj = obj; flashUntil = performance.now() + 1600;
   kick();
 }
@@ -898,7 +973,7 @@ canvas.addEventListener("click", (e) => {
 canvas.addEventListener("dblclick", (e) => {
   const fl = floorGroups[Math.round(cur)];
   if (!fl) return;
-  ptr.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+  toNDC(e.clientX, e.clientY, ptr);
   ray.setFromCamera(ptr, camera);
   const hit = ray.intersectObject(fl, true).find((h) => h.object.visible && !h.object.isSprite);
   if (!hit) return;
@@ -907,17 +982,19 @@ canvas.addEventListener("dblclick", (e) => {
   view.zoomT = clampZ(Math.min(view.zoomT * 0.5, 0.38));
   kick();
 });
-document.querySelectorAll("[data-tech]").forEach((b) => b.addEventListener("click", () => {
+document.addEventListener("click", (e) => {
+  const b = e.target.closest && e.target.closest("[data-tech]");
+  if (!b) return;
   const f = +b.dataset.floor, k = +b.dataset.tech;
   const o = clickables.map((m) => m.userData.pickRoot).find((r) => r.userData.pick.floor === f && r.userData.pick.tech === k);
   const rb = b.getBoundingClientRect();
   if (o) {
     const p = new THREE.Vector3(); o.getWorldPosition(p); p.project(camera);
-    showTip(o, (p.x + 1) / 2 * window.innerWidth, (1 - p.y) / 2 * window.innerHeight);
+    showTip(o, toScreenX(p.x), toScreenY(p.y));
   } else {
     showTip({ userData: { pick: { floor: f, tech: k } } }, rb.left, rb.bottom);
   }
-}));
+});
 window.addEventListener("keydown", (e) => { if (e.key === "Escape") tip.hidden = true; });
 
 /* ---------- callouts (like a product explainer): name + leader line on the real hardware ---------- */
@@ -941,14 +1018,23 @@ function updateCallouts() {
   const m = mixers.find((x) => Math.abs(cur - x.floor) < 0.3);
   if (!m && !calloutsShown) return;
   calloutsShown = !!m;
+  const minY = cvs.top + topH + 8, maxY = cvs.top + cvs.height - 8;
+  const placed = [];
   Object.entries(calloutEls).forEach(([k, el]) => {
     const a = m && m.anchors[k];
     if (!a) { setHidden(el, true); return; }
     a.getWorldPosition(tmpV); tmpV.project(camera);
-    if (tmpV.z > 1) { setHidden(el, true); return; }
+    const x = Math.round(toScreenX(tmpV.x)), y = Math.round(toScreenY(tmpV.y));
+    if (tmpV.z > 1 || y < minY || y > maxY) { setHidden(el, true); return; }
     setHidden(el, false);
-    const tr = `translate(${Math.round((tmpV.x + 1) / 2 * window.innerWidth)}px, ${Math.round((1 - tmpV.y) / 2 * window.innerHeight)}px)${LEFT.has(k) ? " translateX(-100%)" : ""}`;
+    const tr = `translate(${x}px, ${y}px)${LEFT.has(k) ? " translateX(-100%)" : ""}`;
     if (el.style.transform !== tr) el.style.transform = tr;
+    // drop a label that leaves the screen or lands on one already shown (keys are in priority order)
+    const r = el.querySelector("b").getBoundingClientRect();
+    const clash = r.left < 2 || r.right > window.innerWidth - 2 ||
+      placed.some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 3 && r.bottom > q.top - 3);
+    if (clash) { setHidden(el, true); return; }
+    placed.push(r);
   });
 }
 

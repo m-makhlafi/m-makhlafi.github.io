@@ -65,6 +65,16 @@ const dateClass = (d: string) => (/^[0-9 .\-]+$/.test(d) ? "mono" : "");
       </div>
     </div>
 
+    <!-- phones: the story sheet under the 3D scene (filled by journey.js) -->
+    <aside class="jr-sheet" id="jrSheet" aria-label="قصة الطابق الحالي" hidden>
+      <div class="jr-sheet-in" id="jrSheetIn" aria-live="polite"></div>
+      <div class="jr-sheet-nav">
+        <button type="button" id="jrPrev" aria-label="الطابق السابق">→</button>
+        <span id="jrCount"></span>
+        <button type="button" id="jrNext" aria-label="الطابق التالي">←</button>
+      </div>
+    </aside>
+
     <div class="jr-tip" id="jrTip" role="status" hidden><b></b><p></p></div>
     <noscript><p class="hint">الرحلة ثلاثية الأبعاد تحتاج JavaScript، وكل نصوصها ظاهرة في البطاقات.</p></noscript>
   </div>
