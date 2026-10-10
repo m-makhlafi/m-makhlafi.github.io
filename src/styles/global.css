@@ -476,7 +476,7 @@ section.block { padding-block: 72px 8px; scroll-margin-top: 70px; }
 .topo-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; }
 @media (max-width: 920px) { .topo-grid { grid-template-columns: 1fr; } }
 .topo-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
-#labSvg { display: block; width: 100%; min-width: 560px; height: auto; }
+#labSvg { display: block; width: 100%; min-width: 560px; height: auto; direction: ltr; } /* labels are laid out left to right */
 #labSvg .n-title { font-family: var(--f-mono); font-size: 13px; font-weight: 500; fill: var(--ink); }
 #labSvg .n-sub { font-family: var(--f-mono); font-size: 10.5px; fill: var(--muted); }
 #labSvg .node { cursor: pointer; outline: none; }
@@ -897,3 +897,17 @@ html:has(#jr) footer {
   .jr-tip { max-width: calc(100vw - 24px); }
 }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Lab on phones: grid items default to min-width:auto, so the 560px network diagram widened the whole panel and
+   the scenarios, selects and buttons were cut off at the edge. Letting the items shrink keeps everything on screen;
+   the diagram scrolls sideways inside its own frame. */
+.lab-panel > *, .topo-grid > *, .mon-grid > *, .calc > * { min-width: 0; }
+@media (max-width: 640px) {
+  /* the diagram reads left to right (Internet → firewall → switch): open it at its start, not at the RTL end */
+  .topo-scroll { position: relative; direction: ltr; }
+  .topo-scroll::after {
+    content: "↔ اسحب المخطط"; position: sticky; display: block; inset-inline-start: 0; bottom: 0; width: max-content;
+    margin: -28px 8px 6px; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; color: var(--muted);
+    background: color-mix(in srgb, var(--surface) 90%, transparent); pointer-events: none;
+  }
+}
